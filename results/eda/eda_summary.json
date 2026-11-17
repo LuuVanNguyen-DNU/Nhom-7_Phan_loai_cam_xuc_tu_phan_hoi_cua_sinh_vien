@@ -1,0 +1,26 @@
+{
+  "rows": 1223,
+  "columns": 11,
+  "duplicate_full_rows": 0,
+  "duplicate_feedback_text_rows": 0,
+  "ambiguous_text_groups": 0,
+  "mean_word_count": 11.45,
+  "missing_by_column": {
+    "student_id": 0,
+    "department": 0,
+    "subject_name": 0,
+    "feedback_text": 0,
+    "preprocessed_text": 0,
+    "sentiment_label": 0,
+    "sarcasm_flag": 0,
+    "emotion_tag": 0,
+    "feedback_type": 0,
+    "subject_specific_context": 0,
+    "response_required": 0
+  },
+  "label_distribution": {
+    "positive": 489,
+    "neutral": 368,
+    "negative": 366
+  }
+}

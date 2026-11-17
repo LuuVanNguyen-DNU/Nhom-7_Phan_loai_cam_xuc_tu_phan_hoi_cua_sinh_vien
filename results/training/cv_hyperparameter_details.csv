@@ -1,0 +1,25 @@
+﻿model_id,vectorizer,algorithm,hyperparameters,cv_f1_macro_mean,cv_f1_macro_std,rank_in_configuration,selected_param_for_configuration
+BoW_Unigram_Bigram__KNN,BoW_Unigram_Bigram,KNN,"{""model__n_neighbors"": 7}",0.3433154847647251,0.013606296073101678,1,True
+BoW_Unigram_Bigram__KNN,BoW_Unigram_Bigram,KNN,"{""model__n_neighbors"": 5}",0.3421403945584713,0.0039150277622054894,2,False
+BoW_Unigram_Bigram__KNN,BoW_Unigram_Bigram,KNN,"{""model__n_neighbors"": 3}",0.33735344360939473,0.0091882596760355,3,False
+BoW_Unigram_Bigram__NaiveBayes,BoW_Unigram_Bigram,NaiveBayes,"{""model__alpha"": 0.5}",0.35685936645994354,0.03316671509468417,1,True
+BoW_Unigram_Bigram__NaiveBayes,BoW_Unigram_Bigram,NaiveBayes,"{""model__alpha"": 1.0}",0.35050662748946676,0.02145059015829974,2,False
+BoW_Unigram_Bigram__NaiveBayes,BoW_Unigram_Bigram,NaiveBayes,"{""model__alpha"": 2.0}",0.33900602910078087,0.015360850743716589,3,False
+BoW_Unigram__KNN,BoW_Unigram,KNN,"{""model__n_neighbors"": 5}",0.35548479874191763,0.025012573790420923,1,True
+BoW_Unigram__KNN,BoW_Unigram,KNN,"{""model__n_neighbors"": 3}",0.3450412081297229,0.010142152386436556,2,False
+BoW_Unigram__KNN,BoW_Unigram,KNN,"{""model__n_neighbors"": 7}",0.3413382600406105,0.02671208625234981,3,False
+BoW_Unigram__NaiveBayes,BoW_Unigram,NaiveBayes,"{""model__alpha"": 0.5}",0.3636629453151046,0.01479848046450827,1,True
+BoW_Unigram__NaiveBayes,BoW_Unigram,NaiveBayes,"{""model__alpha"": 1.0}",0.356507589831972,0.016159493921142895,2,False
+BoW_Unigram__NaiveBayes,BoW_Unigram,NaiveBayes,"{""model__alpha"": 2.0}",0.3564492462146476,0.013584028687898412,3,False
+TFIDF_Unigram_Bigram__KNN,TFIDF_Unigram_Bigram,KNN,"{""model__n_neighbors"": 3}",0.3489727183820228,0.012481588041781448,1,True
+TFIDF_Unigram_Bigram__KNN,TFIDF_Unigram_Bigram,KNN,"{""model__n_neighbors"": 5}",0.34560374121178183,0.009889994957632289,2,False
+TFIDF_Unigram_Bigram__KNN,TFIDF_Unigram_Bigram,KNN,"{""model__n_neighbors"": 7}",0.3445357858601789,0.005402046591442871,3,False
+TFIDF_Unigram_Bigram__NaiveBayes,TFIDF_Unigram_Bigram,NaiveBayes,"{""model__alpha"": 0.5}",0.28518207556458713,0.02232670067263401,1,True
+TFIDF_Unigram_Bigram__NaiveBayes,TFIDF_Unigram_Bigram,NaiveBayes,"{""model__alpha"": 1.0}",0.25930446145500774,0.023252628118502053,2,False
+TFIDF_Unigram_Bigram__NaiveBayes,TFIDF_Unigram_Bigram,NaiveBayes,"{""model__alpha"": 2.0}",0.20482327259194075,0.007368798428353747,3,False
+TFIDF_Unigram__KNN,TFIDF_Unigram,KNN,"{""model__n_neighbors"": 5}",0.3646705034522873,0.008816403248689627,1,True
+TFIDF_Unigram__KNN,TFIDF_Unigram,KNN,"{""model__n_neighbors"": 7}",0.3534196346594409,0.011220814397149097,2,False
+TFIDF_Unigram__KNN,TFIDF_Unigram,KNN,"{""model__n_neighbors"": 3}",0.3488583372221357,0.012364446152628399,3,False
+TFIDF_Unigram__NaiveBayes,TFIDF_Unigram,NaiveBayes,"{""model__alpha"": 0.5}",0.3373645085291847,0.03453717376780371,1,True
+TFIDF_Unigram__NaiveBayes,TFIDF_Unigram,NaiveBayes,"{""model__alpha"": 1.0}",0.32760719791242204,0.02244009171042186,2,False
+TFIDF_Unigram__NaiveBayes,TFIDF_Unigram,NaiveBayes,"{""model__alpha"": 2.0}",0.2834499746854804,0.029667302087578586,3,False

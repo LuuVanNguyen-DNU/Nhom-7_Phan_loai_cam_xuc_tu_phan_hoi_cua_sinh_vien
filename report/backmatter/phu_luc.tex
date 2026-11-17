@@ -1,0 +1,190 @@
+
+\UnnumberedChapter{PHỤ LỤC}
+
+% ============================================
+% PHỤ LỤC A. KHAI BÁO SỬ DỤNG AI
+% ============================================
+
+\section*{Phụ lục A. Khai báo sử dụng công cụ AI}
+
+Trong quá trình thực hiện bài tập lớn học phần
+Nhập môn Học máy với đề tài
+``Phân loại cảm xúc từ phản hồi của sinh viên'',
+nhóm có sử dụng công cụ ChatGPT của OpenAI
+để hỗ trợ một số công việc nghiên cứu,
+lập trình và trình bày báo cáo.
+
+Các nội dung có sự hỗ trợ của AI bao gồm:
+
+\begin{itemize}
+
+    \item Giải thích yêu cầu của bài tập lớn,
+    tìm hiểu quy trình học máy và các thuật
+    toán được sử dụng trong đề tài.
+
+    \item Hỗ trợ xây dựng, rà soát và chỉnh sửa
+    mã nguồn trong các Jupyter Notebook,
+    bao gồm khám phá dữ liệu, tiền xử lý,
+    huấn luyện và đánh giá mô hình.
+
+    \item Hỗ trợ phát hiện và xử lý lỗi Python,
+    kiểm tra cách truyền dữ liệu giữa các
+    notebook và hạn chế rò rỉ dữ liệu.
+
+    \item Hỗ trợ xây dựng các bảng tổng hợp,
+    phân tích chỉ số đánh giá và diễn giải
+    các trường hợp mô hình dự đoán sai.
+
+    \item Hỗ trợ soạn thảo, hiệu chỉnh nội dung
+    và mã nguồn LaTeX cho báo cáo khoa học.
+
+    \item Hỗ trợ thiết kế sơ đồ quy trình học máy
+    và trình bày các kết quả thực nghiệm.
+
+\end{itemize}
+
+Các kết quả thực nghiệm được trình bày
+trong báo cáo phải được đối chiếu với
+đầu ra thực tế của chương trình trên
+bộ dữ liệu do giảng viên chỉ định.
+
+AI không được xem là nguồn xác nhận
+tính chính xác của nhãn dữ liệu hoặc
+chất lượng dự đoán của mô hình.
+
+Nhóm chịu trách nhiệm kiểm tra và
+hiệu chỉnh mã nguồn, xác minh số liệu,
+đối chiếu tài liệu tham khảo và
+giải thích những phương pháp đã sử dụng.
+
+Những kết luận về nguyên nhân dự đoán sai
+được xem xét trên cơ sở kết quả thực nghiệm
+và các mẫu dữ liệu được kiểm tra,
+không mặc nhiên coi mọi nhận xét do
+AI đề xuất là kết luận đã được chứng minh.
+
+Nhóm cam kết khai báo trung thực việc
+sử dụng AI và chịu trách nhiệm đối với
+nội dung, mã nguồn và kết quả
+được nộp trong bài tập lớn.
+
+
+% ============================================
+% PHỤ LỤC B. HƯỚNG DẪN CHẠY CHƯƠNG TRÌNH
+% ============================================
+
+\section*{Phụ lục B. Hướng dẫn chạy chương trình}
+
+\subsection*{B.1. Chuẩn bị môi trường}
+
+Chương trình được phát triển bằng Python
+và thực thi thông qua Jupyter Notebook
+trong Visual Studio Code.
+
+Để cài đặt các thư viện cần thiết,
+người sử dụng mở terminal tại thư mục
+gốc của dự án và thực hiện:
+
+\begin{verbatim}
+python -m pip install -r requirements.txt
+\end{verbatim}
+
+Sau đó, lựa chọn môi trường Python
+phù hợp làm Jupyter Kernel trong
+Visual Studio Code.
+
+\subsection*{B.2. Chuẩn bị dữ liệu}
+
+Tệp dữ liệu đầu vào có tên:
+
+\begin{verbatim}
+student_feedback_dataset.csv
+\end{verbatim}
+
+Tệp được đặt tại đường dẫn:
+
+\begin{verbatim}
+data/student_feedback_dataset.csv
+\end{verbatim}
+
+Chương trình cũng cần có module
+\texttt{src/text\_utils.py}
+để thực hiện tiền xử lý văn bản.
+
+\subsection*{B.3. Thứ tự chạy notebook}
+
+Các notebook được thực thi theo thứ tự:
+
+\begin{enumerate}
+
+    \item \texttt{01\_EDA.ipynb}:
+    Khám phá và phân tích dữ liệu.
+
+    \item \texttt{02\_Preprocessing.ipynb}:
+    Làm sạch văn bản, chia dữ liệu
+    và tạo đặc trưng BoW/TF-IDF.
+
+    \item \texttt{03\_Training.ipynb}:
+    Huấn luyện, kiểm định chéo,
+    lựa chọn mô hình và dự đoán.
+
+    \item \texttt{04\_Evaluation.ipynb}:
+    Đánh giá mô hình,
+    xây dựng Confusion Matrix
+    và phân tích dự đoán sai.
+
+\end{enumerate}
+
+Mỗi notebook cần được chạy các ô code
+theo đúng thứ tự để bảo đảm các biến
+và dữ liệu trung gian được khởi tạo.
+
+\subsection*{B.4. Kết quả đầu ra}
+
+Các tệp kết quả được lưu theo
+những thư mục chính:
+
+\begin{itemize}
+
+    \item \texttt{results/eda/}:
+    Thống kê dữ liệu ban đầu.
+
+    \item \texttt{results/member2\_outputs/}:
+    Dữ liệu và đặc trưng sau tiền xử lý.
+
+    \item \texttt{results/training/}:
+    Kết quả huấn luyện,
+    kiểm định chéo và dự đoán.
+
+    \item \texttt{results/evaluation/}:
+    Các bảng đánh giá,
+    ma trận nhầm lẫn và phân tích lỗi.
+
+\end{itemize}
+
+Các bước trên cho phép thực hiện lại
+quy trình học máy từ dữ liệu đầu vào
+đến kết quả đánh giá cuối cùng.
+
+
+% ============================================
+% PHỤ LỤC C. LIÊN KẾT MÃ NGUỒN
+% ============================================
+
+\section*{Phụ lục C. Liên kết mã nguồn}
+
+Mã nguồn được nhóm quản lý trên GitHub.
+
+Đường dẫn repository:
+
+\begin{center}
+\url{https://github.com/LuuVanNguyen-DNU/Nhom-7_Phan_loai_cam_xuc_tu_phan_hoi_cua_sinh_vien}
+\end{center}
+
+Repository cần bao gồm mã nguồn,
+các notebook, tệp khai báo thư viện,
+README và hướng dẫn chạy chương trình.
+
+Lịch sử commit được sử dụng làm
+một trong các minh chứng về quá trình
+phối hợp và đóng góp của các thành viên.

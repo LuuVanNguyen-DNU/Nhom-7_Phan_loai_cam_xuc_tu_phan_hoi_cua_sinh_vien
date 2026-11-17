@@ -1,9 +1,40 @@
-anaconda_projects/
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Virtual environments
 .venv/
 venv/
 env/
-__pycache__/
-.ipynb_checkpoints/
-*.pyc
+.env
+
+# Editor
+.vscode/
+.idea/
+
+# Dataset: tải theo liên kết trong README
+data/*.csv
+
+# Intermediate machine learning outputs
+results/member2_outputs/
+results/training/models/
+*.npz
+*.joblib
+
+# LaTeX temporary files
+*.aux
+*.log
+*.toc
+*.out
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.xdv
+
+# Operating system
 .DS_Store
 Thumbs.db

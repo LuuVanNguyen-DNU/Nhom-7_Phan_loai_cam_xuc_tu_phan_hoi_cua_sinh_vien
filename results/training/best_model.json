@@ -1,0 +1,8 @@
+{
+  "model_id": "TFIDF_Unigram__KNN",
+  "selection_metric": "cv_f1_macro",
+  "cv_f1_macro": 0.3646705034522873,
+  "test_size": 245,
+  "input_requirement": "Văn bản mới phải được làm sạch bằng src.text_utils.clean_text trước khi predict",
+  "random_state": 42
+}

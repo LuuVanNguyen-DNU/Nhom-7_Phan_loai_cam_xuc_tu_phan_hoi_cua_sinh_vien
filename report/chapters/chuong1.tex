@@ -1,0 +1,503 @@
+
+\chapter{ĐẶT VẤN ĐỀ VÀ PHÂN TÍCH YÊU CẦU}
+
+% =============================================
+% 1.1. BỐI CẢNH VÀ LÝ DO CHỌN ĐỀ TÀI
+% =============================================
+
+\section{Bối cảnh và lý do chọn đề tài}
+
+Trong môi trường giáo dục đại học, phản hồi của sinh viên là nguồn thông tin quan trọng giúp nhà trường và giảng viên tìm hiểu trải nghiệm học tập, đánh giá chất lượng giảng dạy và xác định những vấn đề cần cải thiện. Thông qua việc thu thập và phân tích phản hồi, các cơ sở giáo dục có thể nắm bắt nhu cầu của người học, từ đó xem xét những giải pháp phù hợp nhằm nâng cao chất lượng đào tạo.
+
+Phản hồi của sinh viên thường được thể hiện dưới dạng văn bản tự do. Hình thức này cho phép người học trình bày ý kiến một cách linh hoạt và chi tiết. Tuy nhiên, khi số lượng phản hồi tăng lên, việc đọc, phân loại và tổng hợp thủ công sẽ tiêu tốn nhiều thời gian. Ngoài ra, kết quả phân loại có thể chịu ảnh hưởng từ cách đánh giá chủ quan của người thực hiện.
+
+Sự phát triển của Học máy (Machine Learning) và Xử lý ngôn ngữ tự nhiên (Natural Language Processing -- NLP) đã mở ra nhiều hướng tiếp cận trong việc phân tích dữ liệu văn bản. Một trong những bài toán phổ biến là phân loại cảm xúc (Sentiment Classification), nhằm xác định sắc thái cảm xúc được thể hiện trong nội dung văn bản.
+
+Trong lĩnh vực giáo dục, việc phân loại phản hồi thành các nhóm tích cực, trung tính và tiêu cực có thể hỗ trợ quá trình thống kê ý kiến và nhận diện những xu hướng phản hồi đáng chú ý. Tuy nhiên, hiệu quả phân loại phụ thuộc vào nhiều yếu tố như chất lượng dữ liệu, phương pháp tiền xử lý, cách biểu diễn đặc trưng và thuật toán học máy được sử dụng.
+
+Xuất phát từ những vấn đề trên, nhóm lựa chọn thực hiện đề tài \textbf{``Phân loại cảm xúc từ phản hồi của sinh viên''} thuộc học phần Nhập môn Học máy. Đề tài tập trung xây dựng một quy trình phân loại văn bản có giám sát, thực nghiệm với các thuật toán đã học và đánh giá khả năng phân loại trên bộ dữ liệu được giảng viên chỉ định.
+
+Hệ thống được xây dựng nhằm phục vụ mục đích nghiên cứu và học tập. Kết quả dự đoán chỉ mang tính hỗ trợ, không thay thế hoàn toàn việc đọc hiểu và đánh giá ngữ cảnh phản hồi của con người.
+
+
+% =============================================
+% 1.2. MỤC TIÊU VÀ PHÁT BIỂU BÀI TOÁN
+% =============================================
+
+\section{Mục tiêu và phát biểu bài toán}
+
+\subsection{Mục tiêu nghiên cứu}
+
+Mục tiêu chung của đề tài là xây dựng và đánh giá một quy trình học máy có giám sát nhằm phân loại cảm xúc từ phản hồi dạng văn bản của sinh viên. Thông qua quá trình thực nghiệm, nhóm tiến hành so sánh các phương pháp biểu diễn văn bản và các thuật toán phân loại để phân tích ưu điểm, hạn chế của từng phương án.
+
+Các mục tiêu cụ thể bao gồm:
+
+\begin{itemize}
+    \item Khám phá và phân tích bộ dữ liệu phản hồi sinh viên, bao gồm cấu trúc, chất lượng dữ liệu, phân phối nhãn và độ dài văn bản.
+
+    \item Thực hiện tiền xử lý văn bản nhằm chuẩn hóa dữ liệu và chuẩn bị đầu vào cho mô hình học máy.
+
+    \item Biểu diễn văn bản thành vector số bằng Bag-of-Words (BoW) và Term Frequency--Inverse Document Frequency (TF-IDF).
+
+    \item Xây dựng và thử nghiệm các mô hình phân loại sử dụng Multinomial Naive Bayes và K-Nearest Neighbors (K-NN).
+
+    \item So sánh các cấu hình biểu diễn văn bản, thuật toán và siêu tham số nhằm phân tích ảnh hưởng của chúng đến kết quả phân loại.
+
+    \item Đánh giá mô hình bằng Accuracy, Precision, Recall, F1-score và Confusion Matrix.
+
+    \item Phân tích các trường hợp dự đoán sai, xác định những hạn chế và đề xuất hướng cải tiến.
+\end{itemize}
+
+
+\subsection{Phát biểu bài toán}
+
+Đề tài được xây dựng dưới dạng bài toán phân loại văn bản có giám sát (Supervised Text Classification).
+
+Dữ liệu đầu vào là nội dung phản hồi của sinh viên, được lưu trong cột \texttt{feedback\_text}. Nhãn mục tiêu tương ứng được lưu trong cột \texttt{sentiment\_label}.
+
+Qua quá trình khảo sát dữ liệu, nhóm xác định bài toán gồm ba lớp cảm xúc:
+
+\begin{itemize}
+    \item \texttt{positive}: Phản hồi được gán nhãn tích cực.
+
+    \item \texttt{neutral}: Phản hồi được gán nhãn trung tính.
+
+    \item \texttt{negative}: Phản hồi được gán nhãn tiêu cực.
+\end{itemize}
+
+Mục tiêu của bài toán là xây dựng mô hình có khả năng học mối quan hệ giữa đặc trưng văn bản và nhãn cảm xúc từ tập dữ liệu huấn luyện. Sau khi huấn luyện, mô hình được sử dụng để dự đoán nhãn cho những phản hồi chưa được sử dụng trong quá trình học.
+
+Bài toán được biểu diễn dưới dạng:
+
+\begin{equation}
+    f: \mathcal{X} \rightarrow \mathcal{Y}
+\end{equation}
+
+Trong đó:
+
+\begin{itemize}
+    \item $\mathcal{X}$ là tập hợp các phản hồi dạng văn bản.
+
+    \item $\mathcal{Y}$ là tập hợp các nhãn cảm xúc.
+
+    \item $f$ là mô hình phân loại được xây dựng từ dữ liệu huấn luyện.
+\end{itemize}
+
+Tập nhãn mục tiêu được xác định như sau:
+
+\begin{equation}
+    \mathcal{Y} =
+    \{
+    \texttt{negative},
+    \texttt{neutral},
+    \texttt{positive}
+    \}
+\end{equation}
+
+Trong phạm vi nghiên cứu, nhóm sử dụng nội dung văn bản làm đặc trưng đầu vào chính. Các thuộc tính bổ sung như khoa, môn học và loại phản hồi được sử dụng để khám phá dữ liệu nhưng không được đưa trực tiếp vào mô hình phân loại văn bản.
+
+
+% =============================================
+% 1.3. NGUỒN DỮ LIỆU VÀ PHẠM VI
+% =============================================
+
+\section{Nguồn dữ liệu và phạm vi nghiên cứu}
+
+\subsection{Nguồn dữ liệu}
+
+Nhóm sử dụng bộ dữ liệu \textbf{Contextual Sentiment Feedback Dataset}, được giảng viên chỉ định tại mục 3.2 của tài liệu hướng dẫn thực hiện bài tập lớn học phần Nhập môn Học máy.
+
+Bộ dữ liệu được giới thiệu trên nền tảng Kaggle, thông qua tài khoản \texttt{ziya07}. Tệp dữ liệu được sử dụng trong nghiên cứu có tên \texttt{student\_feedback\_dataset.csv}, định dạng CSV.
+
+Qua khảo sát thực tế, bộ dữ liệu gồm 1.223 bản ghi và 11 thuộc tính. Mỗi bản ghi chứa nội dung phản hồi, nhãn cảm xúc và một số thông tin ngữ cảnh liên quan. Nội dung phản hồi trong bộ dữ liệu hiện tại được thể hiện bằng tiếng Anh.
+
+Việc sử dụng đúng bộ dữ liệu được giảng viên chỉ định giúp nhóm thống nhất phạm vi nghiên cứu và bảo đảm sự phù hợp với yêu cầu của học phần.
+
+% CẦN XÁC NHẬN TRƯỚC KHI NỘP:
+% 1. Ngày nhóm tải dữ liệu.
+% 2. Giấy phép và điều kiện sử dụng tại nguồn công bố.
+
+
+\subsection{Phạm vi nghiên cứu}
+
+Đề tài tập trung vào việc phân loại cảm xúc từ nội dung phản hồi dạng văn bản của sinh viên.
+
+Các công việc chính bao gồm khám phá dữ liệu, tiền xử lý, biểu diễn đặc trưng, huấn luyện mô hình, đánh giá kết quả và phân tích lỗi.
+
+Nhóm lựa chọn hai phương pháp biểu diễn văn bản là Bag-of-Words và TF-IDF, kết hợp với hai thuật toán phân loại Multinomial Naive Bayes và K-NN.
+
+Nghiên cứu sử dụng bộ dữ liệu đã được gán nhãn và không thực hiện thu thập phản hồi mới. Các nhãn có sẵn được sử dụng làm nhãn tham chiếu trong quá trình huấn luyện và đánh giá.
+
+Tuy nhiên, nhóm không mặc nhiên xem tất cả nhãn dữ liệu đều đã được kiểm chứng về mặt ngữ nghĩa. Những vấn đề liên quan đến chất lượng nội dung và tính phù hợp của nhãn sẽ được xem xét trong quá trình phân tích kết quả.
+
+Đề tài chưa hướng tới việc triển khai một hệ thống phân loại cảm xúc phục vụ vận hành thực tế. Phạm vi nghiên cứu chủ yếu là so sánh, đánh giá và giải thích kết quả của các phương pháp học máy cơ bản.
+
+
+% =============================================
+% 1.4. KHÁM PHÁ VÀ PHÂN TÍCH DỮ LIỆU
+% =============================================
+
+\section{Khám phá và phân tích dữ liệu (EDA)}
+
+\subsection{Kích thước và cấu trúc dữ liệu}
+
+Quá trình khám phá dữ liệu được thực hiện bằng ngôn ngữ lập trình Python, sử dụng thư viện Pandas để xử lý và thống kê dữ liệu, kết hợp với Matplotlib và Seaborn để trực quan hóa kết quả.
+
+Kết quả khảo sát ban đầu cho thấy bộ dữ liệu gồm \textbf{1.223 bản ghi và 11 thuộc tính}. Trong đó, \texttt{feedback\_text} là cột văn bản đầu vào chính và \texttt{sentiment\_label} là nhãn mục tiêu của bài toán.
+
+Thông tin tổng quan về bộ dữ liệu được trình bày trong Bảng~\ref{tab:tong-quan-du-lieu}.
+
+\begin{table}[H]
+    \centering
+    \caption{Thông tin tổng quan về bộ dữ liệu}
+    \label{tab:tong-quan-du-lieu}
+    \renewcommand{\arraystretch}{1.15}
+
+    \begin{tabularx}{\textwidth}{|X|X|}
+        \hline
+        \textbf{Thông tin} & \textbf{Kết quả} \\
+        \hline
+        Số lượng bản ghi & 1.223 \\
+        \hline
+        Số lượng thuộc tính & 11 \\
+        \hline
+        Định dạng dữ liệu & CSV \\
+        \hline
+        Cột văn bản đầu vào & \texttt{feedback\_text} \\
+        \hline
+        Cột nhãn mục tiêu & \texttt{sentiment\_label} \\
+        \hline
+        Số lớp cảm xúc & 3 \\
+        \hline
+        Ngôn ngữ phản hồi & Tiếng Anh \\
+        \hline
+        Số khoa trong dữ liệu & 7 \\
+        \hline
+        Số môn học trong dữ liệu & 15 \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+Bên cạnh hai thuộc tính chính phục vụ phân loại cảm xúc, bộ dữ liệu còn chứa các thuộc tính mô tả thông tin sinh viên, môn học và ngữ cảnh phản hồi.
+
+Ý nghĩa của từng thuộc tính được trình bày trong Bảng~\ref{tab:mo-ta-thuoc-tinh}.
+
+\begin{table}[H]
+    \centering
+    \caption{Mô tả các thuộc tính trong bộ dữ liệu}
+    \label{tab:mo-ta-thuoc-tinh}
+    \renewcommand{\arraystretch}{1.1}
+    \setlength{\tabcolsep}{4pt}
+
+    \begin{tabularx}{\textwidth}{
+        |p{0.34\textwidth}
+        |p{0.15\textwidth}
+        |X|
+    }
+        \hline
+        \textbf{Thuộc tính}
+        & \textbf{Kiểu dữ liệu}
+        & \textbf{Ý nghĩa} \\
+        \hline
+
+        \texttt{student\_id}
+        & Chuỗi
+        & Mã định danh sinh viên trong dữ liệu. \\
+        \hline
+
+        \texttt{department}
+        & Chuỗi
+        & Khoa hoặc nhóm ngành liên quan. \\
+        \hline
+
+        \texttt{subject\_name}
+        & Chuỗi
+        & Tên môn học liên quan đến phản hồi. \\
+        \hline
+
+        \texttt{feedback\_text}
+        & Chuỗi
+        & Nội dung phản hồi gốc của sinh viên. \\
+        \hline
+
+        \texttt{preprocessed\_text}
+        & Chuỗi
+        & Văn bản đã được chuẩn hóa có sẵn trong dữ liệu. \\
+        \hline
+
+        \texttt{sentiment\_label}
+        & Chuỗi
+        & Nhãn cảm xúc, là biến mục tiêu. \\
+        \hline
+
+        \texttt{sarcasm\_flag}
+        & Số nguyên
+        & Cờ liên quan đến tính châm biếm. \\
+        \hline
+
+        \texttt{emotion\_tag}
+        & Chuỗi
+        & Nhãn cảm xúc chi tiết đi kèm. \\
+        \hline
+
+        \texttt{feedback\_type}
+        & Chuỗi
+        & Loại hoặc lĩnh vực phản hồi. \\
+        \hline
+
+        \shortstack[l]{
+            \texttt{subject\_specific\_}\\
+            \texttt{context}
+        }
+        & Chuỗi
+        & Thông tin ngữ cảnh liên quan đến môn học. \\
+        \hline
+
+        \texttt{response\_required}
+        & Số nguyên
+        & Cờ thể hiện thông tin về yêu cầu xử lý tiếp. \\
+        \hline
+
+    \end{tabularx}
+\end{table}
+
+Các thuộc tính trong bộ dữ liệu có thể hỗ trợ phân tích đặc điểm của phản hồi. Tuy nhiên, mục tiêu chính của đề tài là đánh giá khả năng phân loại cảm xúc dựa trên nội dung văn bản.
+
+Vì vậy, nhóm lựa chọn cột \texttt{feedback\_text} làm đầu vào và cột \texttt{sentiment\_label} làm nhãn mục tiêu. Các thuộc tính còn lại không được đưa trực tiếp vào quá trình huấn luyện mô hình.
+
+
+% =============================================
+% 1.4.2. CHẤT LƯỢNG DỮ LIỆU
+% =============================================
+
+\subsection{Đánh giá chất lượng dữ liệu}
+
+Trước khi xây dựng mô hình, nhóm tiến hành kiểm tra giá trị thiếu, bản ghi trùng lặp, nội dung phản hồi rỗng và tính nhất quán của nhãn cảm xúc.
+
+Kết quả kiểm tra được trình bày trong Bảng~\ref{tab:chat-luong-du-lieu}.
+
+\begin{table}[H]
+    \centering
+    \caption{Kết quả kiểm tra chất lượng dữ liệu}
+    \label{tab:chat-luong-du-lieu}
+    \renewcommand{\arraystretch}{1.15}
+
+    \begin{tabularx}{\textwidth}{|X|r|}
+        \hline
+        \textbf{Tiêu chí kiểm tra}
+        & \textbf{Số lượng} \\
+        \hline
+        Giá trị thiếu trong toàn bộ dữ liệu & 0 \\
+        \hline
+        Phản hồi có nội dung rỗng & 0 \\
+        \hline
+        Bản ghi trùng lặp hoàn toàn & 0 \\
+        \hline
+        Nội dung phản hồi trùng lặp & 0 \\
+        \hline
+        Nội dung trùng nhưng có nhiều nhãn & 0 \\
+        \hline
+        Nhãn mục tiêu bị thiếu & 0 \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+Kết quả cho thấy bộ dữ liệu không có giá trị thiếu trong các thuộc tính, không có phản hồi rỗng và không có bản ghi trùng lặp hoàn toàn.
+
+Đối với nội dung phản hồi, nhóm thực hiện kiểm tra trùng lặp để phát hiện những bản ghi có văn bản giống nhau. Kết quả không ghi nhận trường hợp nội dung trùng lặp trong bộ dữ liệu hiện tại.
+
+Như vậy, xét trên các tiêu chí cấu trúc cơ bản, bộ dữ liệu có thể được sử dụng cho các bước xử lý tiếp theo mà không cần loại bỏ bản ghi do thiếu thông tin.
+
+Tuy nhiên, việc không có giá trị thiếu hoặc trùng lặp không đồng nghĩa với việc chất lượng ngữ nghĩa và độ chính xác của nhãn đã được bảo đảm.
+
+Qua khảo sát một số mẫu, nhóm nhận thấy có những phản hồi gồm các từ tiếng Anh kết hợp thiếu tự nhiên, chưa thể hiện rõ một nhận xét hoàn chỉnh về trải nghiệm học tập.
+
+Đây là đặc điểm cần tiếp tục xem xét trong quá trình phân tích kết quả. Nhóm chưa có đủ bằng chứng để khẳng định nguyên nhân hình thành những câu văn này hoặc kết luận rằng các nhãn được cung cấp không chính xác.
+
+
+% =============================================
+% 1.4.3. PHÂN PHỐI NHÃN
+% =============================================
+
+\subsection{Phân phối nhãn cảm xúc}
+
+Biến mục tiêu \texttt{sentiment\_label} gồm ba lớp cảm xúc: positive, neutral và negative.
+
+Kết quả thống kê phân phối nhãn được trình bày trong Bảng~\ref{tab:phan-phoi-nhan}.
+
+\begin{table}[H]
+    \centering
+    \caption{Phân phối các nhãn cảm xúc}
+    \label{tab:phan-phoi-nhan}
+    \renewcommand{\arraystretch}{1.15}
+
+    \begin{tabular}{|l|r|r|}
+        \hline
+        \textbf{Nhãn}
+        & \textbf{Số lượng}
+        & \textbf{Tỷ lệ (\%)} \\
+        \hline
+
+        Positive & 489 & 39,98 \\
+        \hline
+
+        Neutral & 368 & 30,09 \\
+        \hline
+
+        Negative & 366 & 29,93 \\
+        \hline
+
+        \textbf{Tổng cộng}
+        & \textbf{1.223}
+        & \textbf{100,00} \\
+        \hline
+    \end{tabular}
+\end{table}
+
+% Chèn hình khi đã tải ảnh lên thư mục images.
+% Nếu chưa có ảnh, LaTeX vẫn biên dịch bình thường.
+
+\IfFileExists{images/phan_bo_nhan.png}{
+    \begin{figure}[H]
+        \centering
+        \includegraphics[
+            width=0.82\textwidth
+        ]{images/phan_bo_nhan.png}
+
+        \caption{Phân phối số lượng phản hồi theo nhãn cảm xúc}
+        \label{fig:phan-bo-nhan}
+    \end{figure}
+}{}
+
+Từ kết quả thống kê, lớp Positive có số lượng lớn nhất với 489 phản hồi, chiếm 39,98\% tổng dữ liệu.
+
+Lớp Neutral có 368 phản hồi, chiếm 30,09\%, trong khi lớp Negative có 366 phản hồi, chiếm 29,93\%.
+
+Tỷ lệ giữa lớp có nhiều mẫu nhất và lớp có ít mẫu nhất xấp xỉ 1,34 lần. Điều này cho thấy phân phối nhãn không hoàn toàn đồng đều nhưng cũng không xuất hiện sự chênh lệch quá lớn giữa các lớp.
+
+Tuy nhiên, việc lớp Positive có số lượng mẫu nhiều hơn có thể ảnh hưởng đến xu hướng dự đoán của một số thuật toán học máy.
+
+Vì vậy, trong quá trình đánh giá, nhóm sử dụng Accuracy kết hợp với Precision, Recall và F1-score theo Macro-average nhằm xem xét khả năng phân loại trên cả ba lớp, thay vì chỉ dựa vào tỷ lệ dự đoán đúng chung.
+
+
+% =============================================
+% 1.4.4. ĐỘ DÀI PHẢN HỒI
+% =============================================
+
+\subsection{Phân tích độ dài phản hồi}
+
+Độ dài văn bản là một đặc điểm cần được xem xét trong bài toán phân loại cảm xúc.
+
+Những phản hồi ngắn có thể chứa ít thông tin ngữ cảnh, trong khi những phản hồi dài hơn có thể đề cập đến nhiều nội dung. Tuy nhiên, độ dài không phản ánh trực tiếp chất lượng hoặc mức độ rõ ràng của một phản hồi.
+
+Trong nghiên cứu này, độ dài phản hồi được xác định bằng số từ sau khi tách văn bản dựa trên khoảng trắng.
+
+Kết quả thống kê được trình bày trong Bảng~\ref{tab:do-dai-phan-hoi}.
+
+\begin{table}[H]
+    \centering
+    \caption{Thống kê độ dài phản hồi theo số từ}
+    \label{tab:do-dai-phan-hoi}
+    \renewcommand{\arraystretch}{1.15}
+
+    \begin{tabularx}{\textwidth}{|X|r|}
+        \hline
+        \textbf{Chỉ tiêu}
+        & \textbf{Số từ} \\
+        \hline
+
+        Độ dài trung bình & 11,45 \\
+        \hline
+
+        Trung vị & 11 \\
+        \hline
+
+        Độ dài ngắn nhất & 4 \\
+        \hline
+
+        Độ dài lớn nhất & 22 \\
+        \hline
+
+        Tứ phân vị thứ nhất (Q1) & 8 \\
+        \hline
+
+        Tứ phân vị thứ ba (Q3) & 14 \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+\IfFileExists{images/feedback_length.png}{
+    \begin{figure}[H]
+        \centering
+        \includegraphics[
+            width=0.85\textwidth
+        ]{images/feedback_length.png}
+
+        \caption{Phân phối độ dài phản hồi theo số từ}
+        \label{fig:do-dai-phan-hoi}
+    \end{figure}
+}{}
+
+Kết quả thống kê cho thấy độ dài trung bình của các phản hồi là khoảng 11,45 từ, với trung vị bằng 11 từ.
+
+Giá trị tứ phân vị thứ nhất (Q1) bằng 8 và tứ phân vị thứ ba (Q3) bằng 14. Điều này cho thấy khoảng 50\% số phản hồi có độ dài nằm trong khoảng từ 8 đến 14 từ.
+
+Phản hồi ngắn nhất gồm 4 từ và phản hồi dài nhất gồm 22 từ.
+
+Nhìn chung, các văn bản trong bộ dữ liệu có độ dài tương đối ngắn. Đặc điểm này có thể ảnh hưởng đến khả năng trích xuất thông tin của những phương pháp biểu diễn văn bản dựa trên từ.
+
+Tuy nhiên, độ dài văn bản không phải yếu tố duy nhất quyết định khả năng phân loại, bởi một phản hồi ngắn vẫn có thể thể hiện cảm xúc rõ ràng nếu nội dung mang đầy đủ ý nghĩa.
+
+Do đó, nhóm xem độ dài văn bản là một đặc điểm cần phân tích và sẽ đối chiếu với kết quả thực nghiệm ở các chương tiếp theo.
+
+
+% =============================================
+% 1.4.5. TỔNG KẾT EDA
+% =============================================
+
+\subsection{Nhận xét tổng hợp sau khám phá dữ liệu}
+
+Từ kết quả khám phá và phân tích dữ liệu, nhóm rút ra một số nhận xét chính như sau:
+
+\begin{itemize}
+    \item \textbf{Về quy mô dữ liệu:} Bộ dữ liệu gồm 1.223 phản hồi với 11 thuộc tính. Cột văn bản đầu vào và nhãn mục tiêu được xác định rõ ràng, phù hợp để thực hiện các thử nghiệm phân loại có giám sát trong phạm vi học phần.
+
+    \item \textbf{Về chất lượng dữ liệu:} Không phát hiện giá trị thiếu, phản hồi rỗng hoặc bản ghi trùng lặp theo các phép kiểm tra đã thực hiện. Tuy nhiên, một số phản hồi có nội dung thiếu tự nhiên và chưa biểu đạt rõ cảm xúc.
+
+    \item \textbf{Về phân phối nhãn:} Ba lớp cảm xúc có mức chênh lệch nhất định, trong đó Positive chiếm tỷ lệ lớn nhất. Vì vậy, cần sử dụng các chỉ số đánh giá phù hợp để tránh chỉ tập trung vào lớp có nhiều mẫu.
+
+    \item \textbf{Về độ dài văn bản:} Các phản hồi có độ dài trung bình khoảng 11,45 từ. Đặc điểm này có thể ảnh hưởng đến khả năng biểu diễn và phân loại văn bản bằng những phương pháp dựa trên từ.
+\end{itemize}
+
+Từ những đặc điểm trên, nhóm lựa chọn sử dụng nội dung phản hồi gốc làm đầu vào, thực hiện các bước chuẩn hóa văn bản và thử nghiệm những phương pháp biểu diễn Bag-of-Words và TF-IDF.
+
+Các bước tiền xử lý, biểu diễn đặc trưng và thiết kế mô hình sẽ được trình bày chi tiết trong Chương 2.
+\section{Yêu cầu và tiêu chí đánh giá}
+
+Căn cứ vào mục tiêu nghiên cứu và tài liệu hướng dẫn thực hiện bài tập lớn học phần Nhập môn Học máy, nhóm xác định các yêu cầu cần đáp ứng trong quá trình xây dựng hệ thống.
+
+\begin{itemize}
+    \item Sử dụng đúng bộ dữ liệu giảng viên chỉ định; xác định rõ cột văn bản đầu vào, nhãn mục tiêu và những đặc điểm quan trọng của dữ liệu.
+
+    \item Thực hiện đầy đủ quy trình từ khám phá dữ liệu, tiền xử lý, biểu diễn đặc trưng, huấn luyện mô hình đến đánh giá và phân tích lỗi.
+
+    \item Xây dựng một phương án baseline làm mốc so sánh và thực hiện ít nhất hai phương án thử nghiệm có ý nghĩa.
+
+    \item Thử nghiệm Bag-of-Words và TF-IDF, đồng thời so sánh ảnh hưởng của các cấu hình biểu diễn văn bản.
+
+    \item Sử dụng Multinomial Naive Bayes và ít nhất một thuật toán phân loại khác đã được học trong học phần.
+
+    \item Phân chia dữ liệu huấn luyện và kiểm thử đúng quy trình, bảo đảm những bước học tham số không sử dụng thông tin từ tập kiểm thử.
+
+    \item Ghi rõ siêu tham số, cách chia dữ liệu và giá trị random_state để hỗ trợ tái tạo kết quả.
+
+    \item Đánh giá mô hình bằng Accuracy, Precision, Recall, F1-score và Confusion Matrix.
+
+    \item So sánh kết quả giữa các mô hình, phân tích những trường hợp dự đoán sai và chỉ ra các hạn chế của dữ liệu cũng như giải pháp.
+\end{itemize}
+
+Việc đánh giá không chỉ tập trung vào khả năng chạy của chương trình mà còn xem xét tính hợp lý của quy trình học máy, khả năng giải thích kết quả và mức độ phù hợp của từng phương án thử nghiệm.
+
+Đặc biệt, một mô hình có Accuracy cao chưa chắc đã phân loại tốt tất cả các lớp. Vì vậy, nhóm sử dụng kết hợp nhiều độ đo, xem xét kết quả theo từng nhãn và so sánh với phương án baseline.
+
+Các yêu cầu trên là cơ sở để nhóm thiết kế quy trình học máy trong Chương 2, tổ chức mã nguồn trong Chương 3, trình bày kết quả thực nghiệm trong Chương 4 và phân tích, thảo luận trong Chương 5.

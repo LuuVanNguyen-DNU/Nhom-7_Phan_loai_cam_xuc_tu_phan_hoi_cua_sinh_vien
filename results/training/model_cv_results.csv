@@ -1,0 +1,9 @@
+﻿model_id,vectorizer,algorithm,cv_f1_macro,cv_f1_macro_std,best_params
+TFIDF_Unigram__KNN,TFIDF_Unigram,KNN,0.3646705034522873,0.008816403248689627,"{""model__n_neighbors"": 5}"
+BoW_Unigram__NaiveBayes,BoW_Unigram,NaiveBayes,0.3636629453151046,0.01479848046450827,"{""model__alpha"": 0.5}"
+BoW_Unigram_Bigram__NaiveBayes,BoW_Unigram_Bigram,NaiveBayes,0.35685936645994354,0.03316671509468417,"{""model__alpha"": 0.5}"
+BoW_Unigram__KNN,BoW_Unigram,KNN,0.35548479874191763,0.025012573790420923,"{""model__n_neighbors"": 5}"
+TFIDF_Unigram_Bigram__KNN,TFIDF_Unigram_Bigram,KNN,0.3489727183820228,0.012481588041781448,"{""model__n_neighbors"": 3}"
+BoW_Unigram_Bigram__KNN,BoW_Unigram_Bigram,KNN,0.3433154847647251,0.013606296073101678,"{""model__n_neighbors"": 7}"
+TFIDF_Unigram__NaiveBayes,TFIDF_Unigram,NaiveBayes,0.3373645085291847,0.03453717376780371,"{""model__alpha"": 0.5}"
+TFIDF_Unigram_Bigram__NaiveBayes,TFIDF_Unigram_Bigram,NaiveBayes,0.28518207556458713,0.02232670067263401,"{""model__alpha"": 0.5}"

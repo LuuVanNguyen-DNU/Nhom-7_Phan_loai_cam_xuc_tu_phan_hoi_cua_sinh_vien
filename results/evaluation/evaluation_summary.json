@@ -1,0 +1,11 @@
+{
+  "selected_model_by_cv": "TFIDF_Unigram__KNN",
+  "selected_cv_f1_macro": 0.3646705034522873,
+  "selected_test_f1_macro": 0.3368776261882489,
+  "baseline_test_f1_macro": 0.3747575194758294,
+  "delta_f1_macro_vs_baseline": -0.03787989328758051,
+  "selected_accuracy": 0.33877551020408164,
+  "test_samples": 245,
+  "wrong_predictions": 162,
+  "largest_confusion_pair": "positive → negative"
+}

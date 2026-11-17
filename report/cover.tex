@@ -1,0 +1,104 @@
+% =====================================================
+% cover.tex
+% Hai trang bìa theo mẫu báo cáo thực tập tốt nghiệp
+% =====================================================
+
+% =========================
+% TRANG BÌA 1
+% =========================
+\begin{titlepage}
+\DrawCoverBorder
+\centering
+\vspace*{0.3cm}
+{\bfseries\fontsize{14pt}{17pt}\selectfont \TenTruong\par}
+\vspace{0.13cm}
+{\bfseries\fontsize{14pt}{17pt}\selectfont \TenKhoa\par}
+
+\vspace{0.7cm}
+\includegraphics[width=0.29\textwidth]{\LogoTruong}\par
+
+\vspace{0.8cm}
+{\bfseries\fontsize{20pt}{24pt}\selectfont BÁO CÁO HỌC PHẦN\par}
+
+\vspace{0.65cm}
+{\bfseries\fontsize{14pt}{18pt}\selectfont
+TÊN HỌC PHẦN: \HocPhan\par}
+
+\vspace{0.45cm}
+\parbox{0.81\textwidth}{\centering\bfseries\fontsize{14pt}{19pt}\selectfont
+TÊN ĐỀ TÀI: \TenBaoCao}
+
+\vfill
+
+\begin{minipage}{0.84\textwidth}
+\fontsize{13pt}{19pt}\selectfont
+\setlength{\parindent}{0pt}
+\begin{tabular}{@{}l@{\hspace{0.45cm}}l@{}}
+\textbf{Giảng viên hướng dẫn:} & \textbf{\GiangVienHD} \\[10pt]
+\textbf{Sinh viên thực hiện:} & \textbf{\TenNhom\ -- Lớp: \LopHoc} \\[8pt]
+ & 1. \ThanhVienMot\ -- MSV: \MaSVmot \\[3pt]
+ & 2. \ThanhVienHai\ -- MSV: \MaSVhai \\[3pt]
+ & 3. \ThanhVienBa\ -- MSV: \MaSVba \\[3pt]
+ & 4. \ThanhVienBon\ -- MSV: \MaSVbon \\[3pt]
+\end{tabular}
+\end{minipage}
+
+\vfill
+{\bfseries\fontsize{13pt}{17pt}\selectfont Hà Nội, 2026\par}
+\end{titlepage}
+% =========================
+% TRANG BÌA 2
+% =========================
+\begin{titlepage}
+\DrawCoverBorder
+\centering
+\vspace*{0.05cm}
+{\bfseries\fontsize{14pt}{17pt}\selectfont \TenTruong\par}
+\vspace{0.12cm}
+{\bfseries\fontsize{14pt}{17pt}\selectfont \TenKhoa\par}
+
+\vspace{0.28cm}
+\includegraphics[width=0.22\textwidth]{\LogoTruong}\par
+
+\vspace{0.42cm}
+{\bfseries\fontsize{19pt}{23pt}\selectfont BÀI TẬP LỚN\par}
+
+\vspace{0.20cm}
+{\bfseries\fontsize{14pt}{18pt}\selectfont
+HỌC PHẦN: \HocPhan\par}
+\vspace{0.20cm}
+\parbox{0.91\textwidth}{\centering\bfseries\fontsize{13.5pt}{19pt}\selectfont
+ĐỀ TÀI: \TenBaoCao\par}
+
+\vspace{0.70cm}
+% Bang co the bo sung/xoa dong sinh vien tuy so luong trong nhom.
+\begingroup
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{5pt}
+\fontsize{11pt}{14pt}\selectfont
+\begin{tabular}{|>{\centering\arraybackslash}p{0.62cm}|>{\centering\arraybackslash}p{2.28cm}|>{\centering\arraybackslash}p{4.15cm}|>{\centering\arraybackslash}p{2.15cm}|>{\centering\arraybackslash}p{1.65cm}|>{\centering\arraybackslash}p{1.70cm}|}
+\hline
+\multirow{2}{*}{\textbf{TT}} & \multirow{2}{*}{\textbf{Mã SV}} & \multirow{2}{*}{\textbf{Họ và tên}} & \multirow{2}{*}{\textbf{Ngày sinh}} & \multicolumn{2}{c|}{\textbf{Điểm}} \\ \cline{5-6}
+ & & & & \textbf{Bằng số} & \textbf{Bằng chữ} \\ \hline
+1 & \MaSVmot & \ThanhVienMot & \NgaySinhMot & & \\ \hline
+2 & \MaSVhai & \ThanhVienHai & \NgaySinhHai & & \\ \hline
+3 & \MaSVba & \ThanhVienBa & \NgaySinhBa & & \\ \hline
+4 & \MaSVbon & \ThanhVienBon & \NgaySinhBon & & \\ \hline
+\end{tabular}\par
+\endgroup
+
+\vspace{0.65cm}
+\noindent\begin{minipage}[t]{0.45\textwidth}
+\centering\bfseries\fontsize{12pt}{16pt}\selectfont CÁN BỘ CHẤM THI 1\par
+\vspace{0.95cm}
+{\fontsize{12pt}{15pt}\selectfont \CanBoChamThiMot\par}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.45\textwidth}
+\centering\bfseries\fontsize{12pt}{16pt}\selectfont CÁN BỘ CHẤM THI 2\par
+\vspace{0.95cm}
+{\fontsize{12pt}{15pt}\selectfont \CanBoChamThiHai\par}
+\end{minipage}
+
+\vfill
+{\bfseries\fontsize{13pt}{17pt}\selectfont Hà Nội, 2026 \Nam\par}
+\end{titlepage}

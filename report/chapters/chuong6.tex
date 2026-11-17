@@ -1,0 +1,463 @@
+
+\chapter{TỔNG KẾT VÀ HƯỚNG PHÁT TRIỂN}
+
+% ============================================
+% 6.1. TỔNG KẾT QUÁ TRÌNH THỰC HIỆN
+% ============================================
+
+\section{Tổng kết quá trình thực hiện}
+
+Trong khuôn khổ học phần Nhập môn Học máy, nhóm đã
+thực hiện đề tài ``Phân loại cảm xúc từ phản hồi của
+sinh viên'' với mục tiêu xây dựng và đánh giá một
+quy trình học máy có giám sát nhằm phân loại
+cảm xúc từ dữ liệu văn bản.
+
+Quá trình thực hiện được triển khai theo các giai
+đoạn chính: khám phá dữ liệu, tiền xử lý văn bản,
+biểu diễn đặc trưng, huấn luyện mô hình, đánh giá
+kết quả và phân tích những trường hợp dự đoán sai.
+
+Nhóm sử dụng bộ dữ liệu Contextual Sentiment
+Feedback Dataset được giảng viên chỉ định,
+gồm 1.223 phản hồi và 11 thuộc tính. Bài toán
+được xác định dưới dạng phân loại văn bản
+thành ba lớp cảm xúc: positive, neutral
+và negative.
+
+Ở giai đoạn khám phá dữ liệu, nhóm tiến hành
+kiểm tra cấu trúc, giá trị thiếu, bản ghi
+trùng lặp, phân phối nhãn và độ dài văn bản.
+Kết quả cho thấy bộ dữ liệu không có giá trị
+thiếu hoặc phản hồi trùng lặp theo các phép
+kiểm tra đã thực hiện. Tuy nhiên, một số
+phản hồi có nội dung ngữ nghĩa chưa rõ ràng,
+cần được chú ý khi phân tích kết quả.
+
+Ở giai đoạn tiền xử lý, nhóm thực hiện chuẩn hóa
+chữ thường, xử lý URL, dấu câu, ký tự đặc biệt
+và khoảng trắng thừa. Các từ phủ định và những
+thành phần có khả năng chứa thông tin cảm xúc
+được giữ lại nhằm hạn chế việc loại bỏ thông
+tin một cách máy móc.
+
+Sau khi làm sạch, dữ liệu được chia thành
+978 mẫu huấn luyện và 245 mẫu kiểm thử,
+tương ứng tỷ lệ 80/20, với
+\texttt{random\_state=42} và phương pháp
+phân tầng theo nhãn.
+
+Nhóm xây dựng bốn cấu hình biểu diễn văn bản
+dựa trên Bag-of-Words và TF-IDF, kết hợp với
+unigram hoặc unigram--bigram.
+
+Trên cơ sở đó, hai thuật toán Multinomial
+Naive Bayes và K-Nearest Neighbors (K-NN)
+được sử dụng để xây dựng các mô hình phân
+loại và thực hiện thử nghiệm so sánh.
+
+Quá trình lựa chọn siêu tham số được thực
+hiện bằng Stratified 3-Fold Cross-Validation
+trên tập huấn luyện với Macro F1-score
+làm tiêu chí đánh giá.
+
+Nhóm cũng xây dựng phương án baseline
+để làm mốc so sánh và sử dụng các chỉ số
+Accuracy, Precision, Recall, F1-score
+cùng Confusion Matrix để đánh giá
+kết quả cuối cùng.
+
+Toàn bộ quy trình được tổ chức thành bốn
+Jupyter Notebook, tương ứng với các giai
+đoạn khám phá dữ liệu, tiền xử lý, huấn luyện
+và đánh giá mô hình.
+
+
+% ============================================
+% 6.2. KẾT QUẢ ĐẠT ĐƯỢC
+% ============================================
+
+\section{Kết quả đạt được}
+
+\subsection{Kết quả về xây dựng quy trình học máy}
+
+Thông qua quá trình thực hiện, nhóm đã xây dựng
+được một quy trình phân loại văn bản bao gồm
+các thành phần cần thiết của bài toán học máy
+có giám sát.
+
+Các kết quả chính bao gồm:
+
+\begin{itemize}
+
+    \item Hoàn thành việc khám phá và phân tích
+    bộ dữ liệu phản hồi sinh viên, xác định
+    cấu trúc dữ liệu, nhãn mục tiêu, phân phối
+    lớp và những vấn đề cần lưu ý về chất
+    lượng văn bản.
+
+    \item Xây dựng quy trình tiền xử lý văn bản
+    và kiểm tra dữ liệu trước khi huấn luyện.
+
+    \item Triển khai hai phương pháp biểu diễn
+    văn bản Bag-of-Words và TF-IDF với bốn
+    cấu hình unigram và unigram--bigram.
+
+    \item Huấn luyện và đánh giá hai thuật toán
+    Multinomial Naive Bayes và K-NN trên cùng
+    bộ dữ liệu và quy trình đánh giá.
+
+    \item Thực hiện 24 lượt thử siêu tham số
+    bằng Stratified 3-Fold Cross-Validation
+    trên tập huấn luyện.
+
+    \item Xây dựng baseline và so sánh các
+    phương án thử nghiệm dựa trên nhiều
+    chỉ số đánh giá.
+
+    \item Tạo các bảng kết quả, biểu đồ
+    so sánh, Confusion Matrix và danh sách
+    phản hồi dự đoán sai để phục vụ
+    phân tích thực nghiệm.
+
+\end{itemize}
+
+Việc tách dữ liệu Train/Test trước khi học
+bộ đặc trưng, kết hợp với việc sử dụng
+Pipeline trong Cross-Validation, giúp hạn
+chế nguy cơ rò rỉ dữ liệu trong quá trình
+lựa chọn mô hình.
+
+Bên cạnh đó, nhóm đã lưu lại các tệp dữ liệu
+trung gian, cấu hình thử nghiệm và kết quả
+dự đoán nhằm hỗ trợ kiểm tra, đối chiếu
+và thực hiện lại quy trình.
+
+
+\subsection{Kết quả thực nghiệm}
+
+Kết quả kiểm định chéo cho thấy mô hình
+TF-IDF Unigram kết hợp K-NN với $k=5$
+đạt Macro F1-score trung bình cao nhất
+trong các cấu hình được thử nghiệm,
+với giá trị 0,3647.
+
+Tuy nhiên, khi đánh giá trên tập kiểm thử
+gồm 245 phản hồi, mô hình được lựa chọn
+chỉ đạt Accuracy 0,3388 và Macro F1-score
+0,3369.
+
+Trong khi đó, mô hình baseline sử dụng
+Bag-of-Words Unigram kết hợp Multinomial
+Naive Bayes với $\alpha=1,0$ đạt
+Accuracy 0,3878 và Macro F1-score 0,3748.
+
+Như vậy, Macro F1-score trên tập kiểm thử
+của mô hình được lựa chọn bằng Cross-Validation
+thấp hơn baseline 0,0379.
+
+Kết quả này cho thấy phương án có điểm
+kiểm định chéo cao nhất chưa đạt hiệu quả
+tốt hơn baseline trên tập kiểm thử hiện tại.
+
+Thông qua Confusion Matrix, nhóm xác định
+mô hình được lựa chọn dự đoán đúng 83
+trong tổng số 245 phản hồi kiểm thử
+và dự đoán sai 162 phản hồi.
+
+Cặp nhãn có số trường hợp nhầm lẫn
+nhiều nhất là positive được dự đoán
+thành negative, với 41 trường hợp.
+
+Các kết quả trên cho thấy mô hình vẫn
+gặp khó khăn trong việc phân biệt
+ba nhóm cảm xúc.
+
+Mặc dù hiệu quả phân loại chưa cao,
+quá trình thực nghiệm đã cung cấp
+những kết quả cụ thể để nhóm so sánh
+các phương pháp, phân tích hạn chế
+và đề xuất hướng cải tiến.
+
+Các bảng kết quả và ma trận nhầm lẫn
+chi tiết đã được trình bày tại
+Chương 4 và thảo luận trong Chương 5.
+
+
+% ============================================
+% 6.3. ĐÁNH GIÁ MỨC ĐỘ HOÀN THÀNH
+% ============================================
+
+\section{Đánh giá mức độ hoàn thành mục tiêu}
+
+Đối chiếu với các mục tiêu đã xác định
+trong Chương 1, nhóm nhận thấy những
+nội dung chính về xây dựng và thực nghiệm
+quy trình học máy đã được triển khai.
+
+Thứ nhất, nhóm đã hoàn thành việc khám phá,
+kiểm tra và phân tích các đặc điểm cơ bản
+của bộ dữ liệu được giảng viên cung cấp.
+
+Thứ hai, nhóm đã xây dựng được quy trình
+tiền xử lý văn bản và chuyển đổi văn bản
+thành biểu diễn số thông qua Bag-of-Words
+và TF-IDF.
+
+Thứ ba, nhóm đã triển khai hai thuật toán
+phân loại đã học là Naive Bayes và K-NN,
+đồng thời thực hiện thử nghiệm thay đổi
+siêu tham số và so sánh nhiều cấu hình.
+
+Thứ tư, nhóm đã đánh giá mô hình bằng
+các chỉ số Accuracy, Precision, Recall,
+F1-score và Confusion Matrix, thay vì
+chỉ sử dụng một giá trị độ chính xác.
+
+Thứ năm, nhóm đã xem xét các trường hợp
+dự đoán sai và thảo luận những hạn chế
+có thể liên quan đến chất lượng dữ liệu,
+phương pháp biểu diễn văn bản và
+khả năng khái quát hóa của mô hình.
+
+Như vậy, các mục tiêu về triển khai
+quy trình, so sánh thuật toán và
+phân tích kết quả đã được thực hiện
+trong phạm vi bài tập lớn.
+
+Tuy nhiên, cần phân biệt giữa việc hoàn
+thành quy trình thực nghiệm và việc đạt
+được một mô hình có chất lượng dự đoán cao.
+
+Kết quả hiện tại chưa chứng minh được
+mô hình có độ tin cậy đủ tốt để sử dụng
+trực tiếp trong các hoạt động phân tích
+phản hồi sinh viên ngoài thực tế.
+
+Do đó, nhóm đánh giá rằng mục tiêu
+xây dựng và nghiên cứu quy trình
+học máy cơ bản đã được thực hiện,
+trong khi mục tiêu nâng cao hiệu quả
+và khả năng ứng dụng thực tế vẫn cần
+được tiếp tục cải thiện.
+
+
+% ============================================
+% 6.4. HẠN CHẾ VÀ HƯỚNG PHÁT TRIỂN
+% ============================================
+
+\section{Hạn chế và hướng phát triển}
+
+\subsection{Những hạn chế còn tồn tại}
+
+Mặc dù đã triển khai đầy đủ các giai đoạn
+chính của quy trình học máy, kết quả thực
+nghiệm vẫn tồn tại một số hạn chế.
+
+Trước hết, bộ dữ liệu có quy mô còn giới hạn
+và một số phản hồi có nội dung thiếu rõ
+nghĩa. Điều này đặt ra yêu cầu cần tiếp tục
+xem xét tính phù hợp giữa nội dung văn bản
+và nhãn cảm xúc được cung cấp.
+
+Tiếp theo, hai phương pháp Bag-of-Words
+và TF-IDF chủ yếu dựa trên sự xuất hiện
+và trọng số của từ hoặc cụm từ.
+
+Vì vậy, các phương pháp này chưa biểu diễn
+đầy đủ ngữ cảnh và quan hệ ngữ nghĩa phức
+tạp giữa các thành phần trong câu.
+
+Bên cạnh đó, phạm vi thử nghiệm siêu tham
+số còn tương đối nhỏ. Nhóm mới khảo sát
+ba giá trị $\alpha$ đối với Naive Bayes
+và ba giá trị $k$ đối với K-NN.
+
+Quá trình đánh giá cũng mới sử dụng
+một lần chia Train/Test cố định.
+Do đó, kết quả chưa phản ánh đầy đủ
+mức độ biến thiên có thể xảy ra
+khi thay đổi cách phân chia dữ liệu.
+
+Cuối cùng, hiệu quả phân loại trên tập
+kiểm thử còn thấp, đặc biệt đối với
+khả năng phân biệt các phản hồi
+thuộc ba lớp cảm xúc.
+
+Những hạn chế trên cho thấy cần
+tiếp tục kiểm chứng và cải thiện
+giải pháp trước khi xem xét
+khả năng ứng dụng thực tế.
+
+
+\subsection{Hướng cải thiện chất lượng dữ liệu}
+
+Một trong những hướng phát triển cần
+được ưu tiên là kiểm tra và nâng cao
+chất lượng dữ liệu đầu vào.
+
+Nhóm có thể xây dựng bộ tiêu chí
+đánh giá nhãn cảm xúc và thực hiện
+kiểm tra thủ công một số lượng mẫu
+đại diện cho từng lớp.
+
+Các phản hồi có nội dung khó hiểu,
+thiếu ngữ cảnh hoặc có dấu hiệu
+không thống nhất giữa văn bản
+và nhãn cần được xem xét kỹ hơn.
+
+Trong trường hợp có điều kiện,
+nhóm có thể nghiên cứu sử dụng
+thêm dữ liệu phản hồi được thu
+thập và gán nhãn theo một quy
+trình thống nhất.
+
+Việc mở rộng hoặc thay đổi bộ
+dữ liệu trong phạm vi bài tập lớn
+cần tuân thủ yêu cầu và được sự
+đồng ý của giảng viên.
+
+
+\subsection{Hướng cải thiện tiền xử lý và biểu diễn đặc trưng}
+
+Trong các nghiên cứu tiếp theo,
+nhóm có thể thực hiện thêm các
+thí nghiệm nhằm xem xét tác động
+của những phương pháp tiền xử lý
+khác nhau.
+
+Chẳng hạn, nhóm có thể so sánh
+việc giữ và loại bỏ một số dấu câu,
+điều chỉnh các ngưỡng
+\texttt{min\_df}, \texttt{max\_df}
+hoặc số lượng đặc trưng tối đa.
+
+Bên cạnh đó, nhóm có thể tiếp tục
+khảo sát những cấu hình n-gram
+khác nhau để đánh giá khả năng
+biểu diễn các cụm từ mang
+thông tin cảm xúc.
+
+Nếu có thêm thời gian và tài nguyên
+tính toán, nhóm có thể tìm hiểu
+các phương pháp biểu diễn văn bản
+nâng cao, chẳng hạn như
+Word Embeddings hoặc Sentence Embeddings.
+
+Tuy nhiên, những phương pháp mở rộng
+cần được lựa chọn có lý do, thực hiện
+thí nghiệm so sánh và đánh giá
+trên dữ liệu phù hợp trước khi
+đưa ra kết luận về hiệu quả.
+
+
+\subsection{Hướng cải thiện mô hình và đánh giá}
+
+Đối với giai đoạn huấn luyện,
+nhóm có thể mở rộng phạm vi
+tìm kiếm các giá trị siêu tham số
+của Naive Bayes và K-NN.
+
+Ngoài ra, việc thực hiện kiểm định
+chéo lặp lại hoặc sử dụng nhiều
+lần chia dữ liệu phù hợp có thể
+giúp nhóm xem xét mức độ ổn định
+của kết quả.
+
+Các thí nghiệm bổ sung cần tiếp tục
+tuân thủ nguyên tắc lựa chọn tham
+số trên dữ liệu huấn luyện hoặc
+validation, không sử dụng tập
+test để điều chỉnh mô hình.
+
+Trong trường hợp có thêm dữ liệu,
+nhóm có thể xây dựng một tập
+kiểm thử độc lập mới để đánh giá
+khả năng khái quát hóa của giải pháp.
+
+Bên cạnh các chỉ số tổng hợp,
+cần tiếp tục phân tích hiệu quả
+theo từng lớp cảm xúc và kiểm tra
+các trường hợp nhầm lẫn quan trọng.
+
+
+\subsection{Khả năng phát triển ứng dụng}
+
+Nếu mô hình được cải thiện và
+đánh giá đạt chất lượng phù hợp,
+nhóm có thể xem xét xây dựng
+một ứng dụng thử nghiệm cho phép
+người dùng nhập nội dung phản hồi
+và nhận kết quả phân loại cảm xúc.
+
+Ứng dụng có thể hỗ trợ thống kê
+số lượng phản hồi theo các nhóm
+tích cực, trung tính và tiêu cực.
+
+Tuy nhiên, kết quả phân loại cần
+được sử dụng như thông tin tham
+khảo, đặc biệt đối với các phản
+hồi có ngữ cảnh phức tạp hoặc
+không thể hiện rõ cảm xúc.
+
+Trong trường hợp triển khai thực tế,
+cần bổ sung các biện pháp bảo vệ
+dữ liệu cá nhân, kiểm soát quyền
+truy cập và cơ chế kiểm tra thủ
+công đối với những dự đoán
+không chắc chắn.
+
+Đây là hướng phát triển trong
+tương lai, không phải chức năng
+đã được triển khai trong phạm
+vi thực nghiệm hiện tại.
+
+
+% ============================================
+% 6.5. KẾT LUẬN CHUNG
+% ============================================
+
+\section{Kết luận chung}
+
+Thông qua đề tài ``Phân loại cảm xúc từ phản hồi
+của sinh viên'', nhóm đã vận dụng những kiến thức
+cơ bản của học phần Nhập môn Học máy để xây dựng
+và thực nghiệm một quy trình phân loại văn bản
+có giám sát.
+
+Đề tài đã thực hiện các bước từ khám phá dữ liệu,
+tiền xử lý, biểu diễn đặc trưng, huấn luyện
+mô hình đến đánh giá và phân tích kết quả.
+
+Việc sử dụng hai thuật toán Multinomial Naive Bayes
+và K-NN, kết hợp với Bag-of-Words và TF-IDF,
+giúp nhóm có cơ sở so sánh ảnh hưởng của phương
+pháp biểu diễn và các tham số đối với hiệu quả
+phân loại.
+
+Kết quả thực nghiệm cho thấy mô hình được lựa
+chọn bằng Cross-Validation chưa đạt hiệu quả
+tốt hơn baseline trên tập kiểm thử hiện tại.
+
+Đồng thời, quá trình phân tích lỗi đã chỉ ra
+những khó khăn trong việc phân biệt các lớp
+cảm xúc, đặc biệt với những phản hồi có
+nội dung thiếu ngữ cảnh hoặc chưa rõ nghĩa.
+
+Từ kết quả này, nhóm nhận thấy hiệu quả của
+một hệ thống học máy không chỉ phụ thuộc vào
+thuật toán mà còn liên quan chặt chẽ đến chất
+lượng dữ liệu, cách biểu diễn đặc trưng và
+phương pháp đánh giá.
+
+Mặc dù kết quả phân loại còn hạn chế,
+đề tài đã giúp nhóm thực hành các bước
+quan trọng trong việc xây dựng một
+quy trình học máy hoàn chỉnh, đồng thời
+rèn luyện khả năng phân tích dữ liệu,
+thiết kế thực nghiệm và diễn giải kết quả.
+
+Những kinh nghiệm thu được là cơ sở để
+nhóm tiếp tục nghiên cứu, cải thiện
+mô hình và phát triển các ứng dụng
+phân tích văn bản trong tương lai.

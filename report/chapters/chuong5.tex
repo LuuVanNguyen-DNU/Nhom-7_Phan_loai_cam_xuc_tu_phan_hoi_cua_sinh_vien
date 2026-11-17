@@ -1,0 +1,953 @@
+
+\chapter{THẢO LUẬN VÀ SO SÁNH}
+
+% ============================================
+% 5.1. THẢO LUẬN TỔNG QUAN
+% ============================================
+
+\section{Thảo luận tổng quan kết quả thực nghiệm}
+
+\subsection{Đánh giá chung về hiệu quả phân loại}
+
+Trong quá trình thực hiện đề tài, nhóm đã triển khai
+và đánh giá hai thuật toán phân loại là Multinomial
+Naive Bayes và K-Nearest Neighbors (K-NN), kết hợp
+với các phương pháp biểu diễn văn bản Bag-of-Words
+(BoW) và TF-IDF.
+
+Các thí nghiệm được thực hiện trên bộ dữ liệu gồm
+1.223 phản hồi sinh viên, được chia thành 978 mẫu
+huấn luyện và 245 mẫu kiểm thử.
+
+Nhóm xây dựng một mô hình baseline sử dụng
+BoW Unigram kết hợp Multinomial Naive Bayes với
+tham số $\alpha=1,0$. Đồng thời, tám tổ hợp
+biểu diễn--thuật toán được thử nghiệm và lựa chọn
+siêu tham số bằng Stratified 3-Fold Cross-Validation.
+
+Kết quả trình bày trong
+Bảng~\ref{tab:ch4-ketqua-test}
+cho thấy hiệu quả phân loại giữa các phương án
+có sự khác biệt.
+
+Mô hình TF-IDF Unigram kết hợp K-NN với $k=5$
+được lựa chọn dựa trên kết quả kiểm định chéo,
+đạt Macro F1-score trung bình cao nhất là 0,3647.
+
+Tuy nhiên, khi đánh giá trên tập kiểm thử,
+mô hình chỉ đạt Accuracy 0,3388 và Macro
+F1-score 0,3369.
+
+Trong khi đó, mô hình baseline BoW Unigram
+kết hợp Multinomial Naive Bayes đạt Accuracy
+0,3878 và Macro F1-score 0,3748.
+
+Như vậy, Macro F1-score của mô hình được lựa chọn
+thấp hơn baseline 0,0379 trên tập kiểm thử.
+
+Kết quả này cho thấy mô hình có điểm kiểm định chéo
+cao nhất chưa chắc đạt hiệu quả tốt hơn các phương
+án khác trên một tập dữ liệu kiểm thử cụ thể.
+
+Đây là một phát hiện quan trọng của thực nghiệm.
+Nhóm không thay đổi mô hình được lựa chọn sau khi
+quan sát kết quả test, nhằm giữ đúng nguyên tắc
+đánh giá đã thiết lập trong quy trình học máy.
+
+
+\subsection{Ý nghĩa của các chỉ số đánh giá}
+
+Bên cạnh hai thuật toán học máy, nhóm sử dụng
+DummyClassifier với chiến lược dự đoán nhãn
+phổ biến nhất làm mốc tham khảo đơn giản.
+
+Kết quả cho thấy DummyClassifier đạt Accuracy
+0,4000 nhưng Macro F1-score chỉ đạt 0,1905.
+
+Ngược lại, baseline Naive Bayes có Accuracy
+thấp hơn, bằng 0,3878, nhưng Macro F1-score
+cao hơn đáng kể, đạt 0,3748.
+
+Nguyên nhân trực tiếp là DummyClassifier
+luôn dự đoán cùng một lớp, dẫn đến khả năng
+nhận diện các lớp còn lại rất hạn chế.
+
+Trong trường hợp này, Accuracy chủ yếu phản
+ánh tỷ lệ mẫu thuộc lớp được dự đoán thường xuyên,
+chứ không cho biết mô hình có phân biệt tốt
+cả ba nhóm cảm xúc hay không.
+
+Do đó, việc chỉ sử dụng Accuracy có thể tạo
+ra cách nhìn chưa đầy đủ về hiệu quả phân loại.
+
+Với bài toán gồm ba lớp negative, neutral và
+positive, nhóm sử dụng Macro F1-score làm tiêu
+chí lựa chọn mô hình vì chỉ số này xem xét
+đóng góp của từng lớp với trọng số như nhau.
+
+Đồng thời, Precision, Recall và Confusion Matrix
+được sử dụng để đánh giá chi tiết khả năng
+nhận diện từng nhóm cảm xúc.
+
+Như vậy, kết quả thực nghiệm cho thấy cần sử dụng
+kết hợp nhiều chỉ số đánh giá, thay vì kết luận
+chất lượng mô hình chỉ dựa trên một giá trị
+độ chính xác chung.
+
+
+% ============================================
+% 5.2. SO SÁNH PHƯƠNG PHÁP VÀ THUẬT TOÁN
+% ============================================
+
+\section{So sánh các phương pháp biểu diễn và thuật toán}
+
+\subsection{Ảnh hưởng của Bag-of-Words và TF-IDF}
+
+Hai phương pháp biểu diễn văn bản được sử dụng
+trong đề tài có cách xác định giá trị đặc trưng
+khác nhau.
+
+Bag-of-Words biểu diễn văn bản thông qua số lần
+xuất hiện của từ hoặc cụm từ, trong khi TF-IDF
+điều chỉnh trọng số đặc trưng dựa trên tần suất
+xuất hiện trong văn bản và mức độ phổ biến của
+từ trong tập huấn luyện.
+
+Để phân tích ảnh hưởng của phương pháp biểu diễn,
+nhóm so sánh Macro F1-score trên tập test khi
+giữ nguyên thuật toán và cấu hình n-gram.
+
+Kết quả được trình bày trong
+Bảng~\ref{tab:ch5-bow-tfidf}.
+
+\begin{table}[H]
+\centering
+\caption{So sánh Macro F1-score giữa BoW và TF-IDF}
+\label{tab:ch5-bow-tfidf}
+\renewcommand{\arraystretch}{1.15}
+\small
+
+\begin{tabularx}{\textwidth}{|X|r|r|r|}
+\hline
+\textbf{Cấu hình}
+& \textbf{BoW}
+& \textbf{TF-IDF}
+& \textbf{Chênh lệch} \\
+\hline
+
+Unigram + NB
+& 0,3702 & 0,3614 & -0,0088 \\
+\hline
+
+Unigram + KNN
+& 0,3588 & 0,3369 & -0,0219 \\
+\hline
+
+Unigram--Bigram + NB
+& 0,3436 & 0,3316 & -0,0120 \\
+\hline
+
+Unigram--Bigram + KNN
+& 0,3271 & 0,3316 & +0,0045 \\
+\hline
+
+\end{tabularx}
+\end{table}
+
+\noindent
+\textit{Ghi chú:} Chênh lệch được tính bằng
+Macro F1 của TF-IDF trừ Macro F1 của BoW
+trên cùng cấu hình thuật toán và n-gram.
+
+Từ Bảng~\ref{tab:ch5-bow-tfidf}, có thể nhận thấy
+BoW cho kết quả cao hơn TF-IDF ở ba trong bốn
+trường hợp so sánh.
+
+Đối với Naive Bayes kết hợp unigram, BoW đạt
+Macro F1-score 0,3702, cao hơn TF-IDF với
+kết quả 0,3614.
+
+Tương tự, khi sử dụng K-NN với unigram,
+BoW đạt Macro F1-score 0,3588, trong khi
+TF-IDF đạt 0,3369.
+
+Riêng cấu hình unigram kết hợp bigram với K-NN,
+TF-IDF đạt Macro F1-score 0,3316, cao hơn
+BoW với kết quả 0,3271. Tuy nhiên, mức
+chênh lệch chỉ là 0,0045.
+
+Những kết quả trên cho thấy TF-IDF không
+mặc nhiên mang lại hiệu quả phân loại cao
+hơn BoW trên bộ dữ liệu hiện tại.
+
+Một giả thuyết có thể xem xét là việc điều chỉnh
+trọng số từ bằng TF-IDF chưa tạo ra sự phân biệt
+đủ rõ giữa các lớp cảm xúc.
+
+Tuy nhiên, đây mới là giả thuyết dựa trên kết quả
+thực nghiệm. Nhóm chưa thực hiện phân tích sâu
+đóng góp của từng đặc trưng để khẳng định nguyên
+nhân trực tiếp.
+
+Vì vậy, kết luận chỉ giới hạn trong bộ dữ liệu,
+các thuật toán và cấu hình đã thử nghiệm.
+
+
+\subsection{Ảnh hưởng của unigram và bigram}
+
+Ngoài phương pháp biểu diễn, nhóm tiến hành
+so sánh các cấu hình unigram và unigram kết
+hợp bigram.
+
+Unigram biểu diễn văn bản thông qua từng từ
+riêng lẻ, còn bigram bổ sung thông tin về
+những cặp từ liên tiếp.
+
+Việc sử dụng bigram có thể giúp mô hình nhận
+diện một số cụm từ mang thông tin cảm xúc,
+chẳng hạn như ``not good''.
+
+Tuy nhiên, bổ sung bigram cũng làm tăng
+số lượng đặc trưng tiềm năng và có thể khiến
+ma trận biểu diễn văn bản trở nên thưa hơn.
+
+Kết quả thực nghiệm cho thấy:
+
+\begin{itemize}
+
+    \item Với BoW kết hợp Naive Bayes,
+    Macro F1-score giảm từ 0,3702 xuống
+    0,3436 khi bổ sung bigram.
+
+    \item Với TF-IDF kết hợp Naive Bayes,
+    Macro F1-score giảm từ 0,3614 xuống
+    0,3316.
+
+    \item Với BoW kết hợp K-NN,
+    Macro F1-score giảm từ 0,3588 xuống
+    0,3271.
+
+    \item Với TF-IDF kết hợp K-NN,
+    Macro F1-score giảm từ 0,3369 xuống
+    0,3316.
+
+\end{itemize}
+
+Như vậy, trong cả bốn trường hợp trên,
+việc bổ sung bigram không cải thiện
+Macro F1-score trên tập test hiện tại.
+
+Một nguyên nhân có thể xảy ra là các cụm
+hai từ xuất hiện không đủ thường xuyên
+để cung cấp những tín hiệu phân loại ổn định.
+
+Bên cạnh đó, một số phản hồi trong bộ dữ liệu
+có cấu trúc ngữ nghĩa chưa rõ ràng. Vì vậy,
+những cặp từ được bổ sung có thể chưa thể hiện
+được các đặc trưng cảm xúc có ích cho mô hình.
+
+Tuy nhiên, nhóm chưa thực hiện thí nghiệm
+loại bỏ từng nhóm đặc trưng để xác nhận
+các giả thuyết trên.
+
+Kết quả cho thấy việc tăng số lượng đặc trưng
+không đồng nghĩa với việc tăng hiệu quả phân loại.
+
+
+\subsection{So sánh Naive Bayes và K-NN}
+
+Hai thuật toán được lựa chọn trong đề tài
+có nguyên lý hoạt động khác nhau.
+
+Multinomial Naive Bayes là thuật toán phân loại
+dựa trên xác suất, sử dụng giả định độc lập có
+điều kiện giữa các đặc trưng khi đã biết lớp.
+
+Trong khi đó, K-NN dự đoán nhãn dựa trên các
+mẫu huấn luyện gần nhất theo một độ đo khoảng cách.
+
+Đối với bài toán phân loại văn bản, Naive Bayes
+có ưu điểm là cách huấn luyện đơn giản, tốc độ
+xử lý tương đối nhanh và phù hợp với dữ liệu
+được biểu diễn bằng tần suất hoặc trọng số từ.
+
+Tuy nhiên, giả định độc lập có điều kiện
+có thể chưa phản ánh đầy đủ mối quan hệ
+giữa các từ trong câu.
+
+K-NN có ưu điểm là nguyên lý trực quan,
+dễ giải thích và không yêu cầu xây dựng
+một hàm phân loại tham số phức tạp.
+
+Tuy nhiên, khi dữ liệu văn bản được biểu diễn
+trong không gian đặc trưng có số chiều lớn,
+việc xác định những mẫu gần nhau về mặt vector
+không nhất thiết đồng nghĩa với việc các
+văn bản có cảm xúc giống nhau.
+
+Trong kết quả thực nghiệm, Naive Bayes đạt
+Macro F1-score cao hơn K-NN ở ba trong bốn
+cấu hình biểu diễn tương ứng, còn một
+cấu hình có kết quả bằng nhau khi làm tròn
+đến bốn chữ số thập phân.
+
+Đặc biệt, baseline BoW Unigram kết hợp
+Naive Bayes đạt Macro F1-score 0,3748,
+cao hơn mô hình TF-IDF Unigram kết hợp
+K-NN được lựa chọn bằng Cross-Validation.
+
+Điều này cho thấy Naive Bayes là một phương án
+đáng chú ý trong phạm vi bộ dữ liệu và
+các cấu hình đã thử nghiệm.
+
+Tuy nhiên, nhóm không kết luận Naive Bayes
+luôn tốt hơn K-NN đối với mọi bài toán
+phân loại văn bản.
+
+Hiệu quả thực tế còn phụ thuộc vào dữ liệu,
+phương pháp biểu diễn, siêu tham số và
+cách thiết kế thí nghiệm.
+
+
+% ============================================
+% 5.3. KHÁC BIỆT GIỮA CV VÀ TEST
+% ============================================
+
+\section{Phân tích sự khác biệt giữa Cross-Validation và tập kiểm thử}
+
+\subsection{Chênh lệch kết quả CV và test}
+
+Trong giai đoạn lựa chọn mô hình, nhóm sử dụng
+Stratified 3-Fold Cross-Validation trên tập
+huấn luyện với Macro F1-score làm tiêu chí.
+
+Kết quả cho thấy TF-IDF Unigram kết hợp K-NN
+với $k=5$ đạt Macro F1 trung bình cao nhất,
+bằng 0,3647.
+
+Cấu hình BoW Unigram kết hợp Naive Bayes
+với $\alpha=0,5$ đạt điểm CV là 0,3637,
+chỉ thấp hơn khoảng 0,0010.
+
+Mức chênh lệch này tương đối nhỏ.
+
+Ngoài ra, độ lệch chuẩn điểm CV của hai cấu
+hình lần lượt xấp xỉ 0,0088 và 0,0148.
+
+Điều này cho thấy mức chênh lệch điểm trung
+bình giữa hai cấu hình nhỏ hơn mức biến thiên
+quan sát được giữa các fold.
+
+Tuy nhiên, chỉ dựa vào ba fold và các độ lệch
+chuẩn này chưa đủ để thực hiện kết luận
+thống kê về sự khác biệt giữa hai mô hình.
+
+Khi đánh giá trên tập test, mô hình TF-IDF
+Unigram kết hợp K-NN đạt Macro F1-score
+0,3369, thấp hơn điểm CV trung bình khoảng
+0,0278.
+
+Trong khi đó, baseline BoW Unigram kết hợp
+Naive Bayes với $\alpha=1,0$ đạt Macro
+F1-score 0,3748 trên test.
+
+Các kết quả cho thấy cấu hình được lựa chọn
+bằng CV không thể hiện được ưu thế trên
+tập kiểm thử hiện tại.
+
+Cần lưu ý rằng baseline sử dụng $\alpha=1,0$,
+trong khi cấu hình BoW Unigram kết hợp Naive Bayes
+được chọn qua CV sử dụng $\alpha=0,5$.
+
+Vì vậy, khi so sánh hai phương án này, nhóm
+phải phân biệt rõ giữa baseline cố định và
+mô hình có siêu tham số được tinh chỉnh.
+
+
+\subsection{Những nguyên nhân có thể ảnh hưởng đến kết quả}
+
+Sự khác biệt giữa điểm CV và điểm test có thể
+liên quan đến nhiều yếu tố.
+
+Thứ nhất, số lượng mẫu huấn luyện và kiểm thử
+còn giới hạn. Kết quả trên một lần chia
+Train/Test có thể chịu ảnh hưởng từ những
+mẫu cụ thể được đưa vào mỗi tập.
+
+Thứ hai, nội dung văn bản trong bộ dữ liệu
+có thể chưa cung cấp đủ thông tin để phân
+biệt rõ ba nhãn cảm xúc.
+
+Thứ ba, các phương pháp BoW và TF-IDF chủ yếu
+dựa trên thông tin từ hoặc cụm từ, trong khi
+cảm xúc có thể phụ thuộc vào ngữ cảnh
+và ý nghĩa tổng thể của câu.
+
+Thứ tư, những giá trị siêu tham số được thử
+nghiệm mới nằm trong một phạm vi tương đối
+nhỏ, gồm ba giá trị $\alpha$ đối với Naive Bayes
+và ba giá trị $k$ đối với K-NN.
+
+Các yếu tố trên chỉ là những giả thuyết
+cần được kiểm chứng thông qua các thí nghiệm
+bổ sung.
+
+Không thể khẳng định mô hình bị overfitting
+chỉ dựa trên việc điểm test thấp hơn
+điểm CV ở một lần đánh giá.
+
+Để đánh giá độ ổn định tốt hơn, nhóm có thể
+thực hiện thêm các lần chia dữ liệu khác
+hoặc kiểm định chéo lặp lại trong các
+nghiên cứu tiếp theo.
+
+Trong phạm vi bài tập lớn hiện tại, nhóm
+giữ nguyên mô hình đã được lựa chọn bằng CV
+và không sử dụng kết quả test để điều chỉnh
+lại lựa chọn sau khi xem điểm số.
+
+
+% ============================================
+% 5.4. PHÂN TÍCH DỰ ĐOÁN SAI
+% ============================================
+
+\section{Phân tích các trường hợp dự đoán sai}
+
+\subsection{Phân tích các lớp thường bị nhầm lẫn}
+
+Kết quả đánh giá mô hình TF-IDF Unigram
+kết hợp K-NN cho thấy có 162 trường hợp
+dự đoán sai trong tổng số 245 phản hồi
+kiểm thử.
+
+Ma trận nhầm lẫn được trình bày tại
+Bảng~\ref{tab:ch4-confusion-matrix}
+và Hình~\ref{fig:ch4-cm-knn}.
+
+Trong đó, cặp nhãn thường bị nhầm lẫn
+nhiều nhất là positive được dự đoán thành
+negative, với 41 trường hợp.
+
+Ngoài ra, có 29 trường hợp neutral bị dự
+đoán thành negative và 27 trường hợp
+positive bị dự đoán thành neutral.
+
+Đối với nhãn negative, mô hình dự đoán
+đúng 31 trên 73 mẫu, tương ứng Recall
+0,4247.
+
+Đối với nhãn neutral, mô hình dự đoán
+đúng 22 trên 74 mẫu, đạt Recall 0,2973.
+
+Đối với nhãn positive, mô hình dự đoán
+đúng 30 trên 98 mẫu, đạt Recall 0,3061.
+
+Như vậy, cả ba lớp đều có Recall dưới 0,5.
+Điều này cho thấy mô hình chưa nhận diện
+chính xác được phần lớn các phản hồi
+thuộc từng lớp cảm xúc.
+
+Đặc biệt, lớp neutral có Recall thấp nhất.
+Đây là lớp cần được chú ý khi phân tích lỗi,
+bởi mô hình thường phân loại một số phản
+hồi trung tính sang positive hoặc negative.
+
+Kết quả cũng cho thấy việc phân biệt
+hai nhóm cảm xúc đối lập positive và negative
+chưa đạt hiệu quả tốt trên bộ dữ liệu này.
+
+
+\subsection{Phân tích một số phản hồi cụ thể}
+
+Để tìm hiểu đặc điểm của các trường hợp
+dự đoán sai, nhóm xem xét các phản hồi
+được xuất từ notebook
+\texttt{04\_Evaluation.ipynb}.
+
+Các phản hồi dưới đây là những ví dụ
+có trong tập kiểm thử thực tế.
+
+\textbf{Trường hợp 1: Phản hồi positive bị dự
+đoán thành negative.}
+
+\begin{quote}
+\textit{``Bad everything rise through similar
+kid talk item day.''}
+\end{quote}
+
+Nhãn được cung cấp trong dữ liệu là
+\texttt{positive}, trong khi mô hình
+dự đoán \texttt{negative}.
+
+Trong câu xuất hiện từ ``Bad'', thường
+mang sắc thái tiêu cực khi đứng trong
+một ngữ cảnh phù hợp.
+
+Tuy nhiên, toàn bộ câu chưa hình thành
+một nhận xét rõ ràng về trải nghiệm học tập.
+
+Do đó, chưa thể kết luận mô hình dự đoán
+negative chỉ vì sự xuất hiện của từ ``Bad''.
+
+Trường hợp này cho thấy cần xem xét
+tính rõ nghĩa của văn bản và sự phù hợp
+giữa nội dung với nhãn được cung cấp.
+
+
+\textbf{Trường hợp 2: Phản hồi neutral bị dự
+đoán thành negative.}
+
+\begin{quote}
+\textit{``Trade leader option interview cultural
+center one seek activity take push forget detail any.''}
+\end{quote}
+
+Nhãn được cung cấp trong dữ liệu là
+\texttt{neutral}, còn mô hình dự đoán
+\texttt{negative}.
+
+Phản hồi chứa nhiều từ và cụm từ có liên hệ
+ngữ nghĩa chưa rõ ràng.
+
+Nội dung không thể hiện một đánh giá
+trực tiếp về hoạt động học tập, môn học
+hoặc trải nghiệm của sinh viên.
+
+Vì vậy, việc xác định sắc thái cảm xúc
+chỉ từ nội dung câu có thể gặp khó khăn.
+
+Đây là một dấu hiệu cho thấy mô hình
+có thể thiếu thông tin ngữ cảnh phù hợp
+để phân biệt các lớp cảm xúc.
+
+
+\textbf{Trường hợp 3: Phản hồi neutral bị dự
+đoán thành positive.}
+
+\begin{quote}
+\textit{``Feeling some four room shoulder
+challenge join development wind key poor black.''}
+\end{quote}
+
+Nhãn được cung cấp trong dữ liệu là
+\texttt{neutral}, nhưng mô hình dự đoán
+\texttt{positive}.
+
+Trong câu có một số từ có thể liên quan
+đến cảm xúc hoặc đánh giá như ``Feeling'',
+``challenge'' và ``poor''.
+
+Tuy nhiên, các từ này không hình thành
+một nội dung phản hồi có ý nghĩa rõ ràng
+khi xét trong toàn bộ câu.
+
+Vì vậy, chưa thể xác định chính xác
+lý do khiến mô hình đưa ra dự đoán
+positive thay vì neutral.
+
+Trường hợp này cần được xem xét cùng
+những ví dụ khác trước khi đưa ra
+kết luận về nguyên nhân lỗi.
+
+
+\subsection{Nhận xét chung từ phân tích lỗi}
+
+Qua ba trường hợp được lựa chọn, nhóm
+nhận thấy một số phản hồi có đặc điểm
+chung là cấu trúc câu thiếu tự nhiên,
+mối liên hệ giữa các từ chưa rõ ràng
+và không biểu đạt trực tiếp một thái độ
+đối với trải nghiệm học tập.
+
+Đặc điểm này có thể gây khó khăn cho
+việc xác định cảm xúc dựa trên nội dung
+văn bản, kể cả khi sử dụng các phương
+pháp biểu diễn đặc trưng khác nhau.
+
+Tuy nhiên, ba ví dụ trên không đủ
+đại diện cho toàn bộ các trường hợp
+dự đoán sai.
+
+Bên cạnh đó, nhãn do bộ dữ liệu cung cấp
+được sử dụng làm nhãn tham chiếu trong
+đánh giá mô hình, nhưng nhóm chưa thực
+hiện quy trình gán nhãn lại độc lập.
+
+Vì vậy, nhóm không khẳng định những
+nhãn trên là sai, cũng không kết luận
+chất lượng ngữ nghĩa là nguyên nhân duy
+nhất khiến mô hình có kết quả thấp.
+
+Để đánh giá đầy đủ hơn, cần xem xét
+nhiều trường hợp dự đoán sai theo từng
+cặp nhãn và đối chiếu với quy tắc
+gán nhãn của nguồn dữ liệu.
+
+
+% ============================================
+% 5.5. HẠN CHẾ
+% ============================================
+
+\section{Hạn chế của dữ liệu và giải pháp hiện tại}
+
+\subsection{Hạn chế về dữ liệu}
+
+Bộ dữ liệu được sử dụng có 1.223 phản hồi,
+đáp ứng phạm vi thực nghiệm cơ bản của
+học phần Nhập môn Học máy.
+
+Tuy nhiên, quy mô này vẫn còn giới hạn
+nếu muốn đánh giá khả năng ứng dụng
+trên nhiều nhóm phản hồi khác nhau.
+
+Bên cạnh đó, một số phản hồi có nội dung
+chưa rõ nghĩa và thiếu ngữ cảnh học tập
+cụ thể.
+
+Đây là vấn đề cần được tiếp tục xem xét
+vì nhãn cảm xúc được dự đoán chỉ dựa
+trên nội dung văn bản.
+
+Ngoài ra, mặc dù dữ liệu không có
+giá trị thiếu hoặc trùng lặp theo
+các phép kiểm tra đã thực hiện,
+nhóm chưa có đầy đủ bằng chứng để
+xác nhận tính chính xác của tất cả
+các nhãn được cung cấp.
+
+Do đó, việc kiểm tra cấu trúc dữ liệu
+chưa đủ để bảo đảm chất lượng ngữ nghĩa
+phục vụ bài toán phân loại cảm xúc.
+
+
+\subsection{Hạn chế của phương pháp tiền xử lý}
+
+Quy trình tiền xử lý hiện tại thực hiện
+chuẩn hóa chữ thường, xử lý URL,
+dấu câu, ký tự đặc biệt và khoảng
+trắng thừa.
+
+Nhóm giữ lại stopword, chữ số và các
+từ phủ định nhằm hạn chế việc loại
+bỏ thông tin cảm xúc một cách máy móc.
+
+Tuy nhiên, quy tắc làm sạch vẫn có thể
+làm mất một số tín hiệu được thể hiện
+thông qua dấu câu hoặc cách trình bày
+văn bản.
+
+Bên cạnh đó, nhóm chưa thực hiện
+các thí nghiệm có kiểm soát để so
+sánh trực tiếp hiệu quả của nhiều
+quy tắc tiền xử lý khác nhau.
+
+Vì vậy, chưa thể kết luận quy trình
+làm sạch hiện tại là phương án tối ưu
+đối với bộ dữ liệu.
+
+
+\subsection{Hạn chế của phương pháp biểu diễn}
+
+Bag-of-Words và TF-IDF có ưu điểm
+là dễ triển khai, dễ giải thích và
+phù hợp với các thuật toán học máy
+cơ bản.
+
+Tuy nhiên, hai phương pháp này
+chủ yếu biểu diễn văn bản dựa
+trên sự xuất hiện hoặc trọng số
+của từ và cụm từ.
+
+Do đó, chúng chưa thể hiện đầy đủ
+ý nghĩa tổng thể, thứ tự từ trong
+các cấu trúc dài hoặc quan hệ
+ngữ nghĩa phức tạp của câu.
+
+Việc bổ sung bigram có thể giữ
+được một phần thông tin từ hai
+từ liên tiếp nhưng chưa giải quyết
+hoàn toàn những hạn chế trên.
+
+Đối với các phản hồi thiếu ngữ cảnh,
+những hạn chế về biểu diễn có thể
+khiến mô hình khó xác định chính
+xác nhãn cảm xúc.
+
+
+\subsection{Hạn chế trong quá trình thực nghiệm}
+
+Nhóm đã sử dụng Cross-Validation
+để lựa chọn siêu tham số trên tập
+huấn luyện và giữ riêng tập test
+cho bước đánh giá cuối cùng.
+
+Tuy nhiên, quá trình đánh giá
+hiện tại mới sử dụng một lần
+chia Train/Test cố định.
+
+Do đó, kết quả chưa phản ánh
+đầy đủ sự biến thiên có thể xảy
+ra khi thay đổi cách chia dữ liệu.
+
+Ngoài ra, phạm vi thử nghiệm
+siêu tham số còn tương đối hẹp.
+
+Nhóm mới xem xét ba giá trị $\alpha$
+đối với Naive Bayes và ba giá trị
+$k$ đối với K-NN.
+
+Vì vậy, chưa có cơ sở để khẳng
+định những giá trị được chọn
+là tối ưu trên mọi cấu hình
+hoặc trên các bộ dữ liệu khác.
+
+Cuối cùng, những kết quả đánh giá
+hiện tại còn thấp và chưa chứng
+minh được hiệu quả đủ tin cậy
+để triển khai hệ thống trong
+môi trường ứng dụng thực tế.
+
+
+% ============================================
+% 5.6. ĐỀ XUẤT CẢI TIẾN
+% ============================================
+
+\section{Đề xuất hướng cải tiến và khả năng ứng dụng}
+
+\subsection{Cải thiện chất lượng dữ liệu}
+
+Một hướng cải tiến quan trọng là
+kiểm tra và nâng cao chất lượng
+của bộ dữ liệu đầu vào.
+
+Nhóm có thể xây dựng quy tắc
+đánh giá nhãn rõ ràng, sau đó
+kiểm tra thủ công một tập mẫu
+đại diện cho ba lớp cảm xúc.
+
+Đặc biệt, nên ưu tiên kiểm tra
+những phản hồi có nội dung
+khó hiểu hoặc có sự không
+thống nhất rõ ràng giữa
+văn bản và nhãn được cung cấp.
+
+Nếu có điều kiện, nhóm có thể
+bổ sung những phản hồi thực tế
+có nội dung rõ nghĩa và được
+gán nhãn theo quy trình thống nhất.
+
+Tuy nhiên, việc thay đổi hoặc
+thay thế bộ dữ liệu trong phạm
+vi bài tập lớn cần được sự
+đồng ý của giảng viên theo
+yêu cầu của học phần.
+
+
+\subsection{Mở rộng thử nghiệm tiền xử lý và đặc trưng}
+
+Trong các nghiên cứu tiếp theo,
+nhóm có thể thử nghiệm thêm
+những phương án xử lý văn bản
+và so sánh kết quả theo cùng
+một quy trình đánh giá.
+
+Chẳng hạn, nhóm có thể phân tích
+tác động của việc giữ hoặc loại
+bỏ một số dấu câu, điều chỉnh
+ngưỡng \texttt{min\_df},
+\texttt{max\_df} hoặc số lượng
+đặc trưng tối đa.
+
+Các thí nghiệm cần được thiết
+kế sao cho chỉ thay đổi một
+hoặc một nhóm tham số có
+lý do, nhằm thuận tiện cho
+việc phân tích tác động.
+
+Bên cạnh đó, nhóm có thể
+tiếp tục khảo sát những
+cấu hình n-gram phù hợp
+với đặc điểm văn bản.
+
+Việc mở rộng phương pháp
+biểu diễn cần được thực
+hiện có kiểm soát, thay vì
+mặc định số lượng đặc
+trưng càng lớn thì kết
+quả càng tốt.
+
+
+\subsection{Đánh giá độ ổn định của mô hình}
+
+Để đánh giá khả năng khái
+quát hóa tốt hơn, nhóm
+có thể thực hiện thêm các
+thí nghiệm với nhiều
+giá trị random_state
+hoặc sử dụng kiểm định
+chéo lặp lại trên dữ liệu
+huấn luyện.
+
+Việc sử dụng nhiều lần
+đánh giá giúp quan sát
+mức độ biến thiên của
+các chỉ số khi dữ liệu
+được phân chia khác nhau.
+
+Nhóm cũng có thể mở rộng
+phạm vi thử nghiệm tham
+số $\alpha$ và $k$,
+nhưng việc lựa chọn
+tham số vẫn cần được
+thực hiện bằng dữ liệu
+huấn luyện hoặc validation.
+
+Tập test dùng để đánh
+giá cuối cùng không
+nên được sử dụng lặp
+đi lặp lại để lựa
+chọn mô hình.
+
+Nếu có thêm dữ liệu,
+một tập kiểm thử độc
+lập mới sẽ giúp đánh
+giá hiệu quả thực tế
+của giải pháp một
+cách đáng tin cậy hơn.
+
+
+\subsection{Khả năng ứng dụng thực tế}
+
+Mục tiêu dài hạn của
+bài toán phân loại cảm
+xúc là hỗ trợ quá trình
+tổng hợp phản hồi
+của sinh viên.
+
+Một hệ thống có chất
+lượng dự đoán tốt có
+thể hỗ trợ thống kê
+số lượng phản hồi
+tích cực, trung tính
+và tiêu cực.
+
+Từ đó, nhà trường
+hoặc giảng viên có
+thể sử dụng kết quả
+như một nguồn thông
+tin tham khảo trong
+quá trình xem xét
+ý kiến người học.
+
+Tuy nhiên, các kết
+quả thực nghiệm hiện
+tại chưa chứng minh
+mô hình đủ chính xác
+để ứng dụng trực tiếp.
+
+Đặc biệt, những
+trường hợp nhầm
+positive thành
+negative có thể
+dẫn đến việc diễn
+giải không đúng
+sắc thái phản hồi
+nếu kết quả tự
+động được sử dụng
+mà không kiểm tra.
+
+Vì vậy, trong
+giai đoạn hiện tại,
+mô hình chỉ nên
+được xem là sản
+phẩm thực nghiệm
+phục vụ mục đích
+học tập và nghiên
+cứu.
+
+Nếu tiếp tục phát
+triển thành ứng
+dụng thực tế,
+cần cải thiện
+chất lượng dữ liệu,
+đánh giá lại mô hình
+và có cơ chế để
+con người kiểm tra
+những phản hồi
+khó phân loại.
+
+
+% ============================================
+% 5.7. TỔNG KẾT CHƯƠNG
+% ============================================
+
+\section{Tổng kết chương}
+
+Chương 5 đã thảo luận
+và so sánh hiệu quả
+của các phương pháp
+biểu diễn văn bản
+và thuật toán học máy
+được sử dụng trong
+đề tài.
+
+Kết quả thực nghiệm
+cho thấy Bag-of-Words
+không nhất thiết kém
+hơn TF-IDF, và việc
+bổ sung bigram chưa
+mang lại sự cải thiện
+Macro F1-score trên
+tập kiểm thử hiện tại.
+
+Bên cạnh đó, mô hình
+TF-IDF Unigram kết hợp
+K-NN được lựa chọn bằng
+Cross-Validation có
+Macro F1-score thấp hơn
+baseline BoW Unigram
+kết hợp Naive Bayes
+trên tập test.
+
+Qua phân tích ma trận
+nhầm lẫn và một số
+trường hợp dự đoán sai,
+nhóm nhận thấy mô hình
+còn gặp khó khăn khi
+phân biệt các lớp
+cảm xúc.
+
+Một số phản hồi có
+nội dung thiếu rõ
+nghĩa, đồng thời
+các phương pháp
+biểu diễn hiện tại
+chưa thể hiện đầy
+đủ thông tin ngữ
+nghĩa của văn bản.
+
+Tuy nhiên, những
+hạn chế này mới
+được xem xét dưới
+dạng giả thuyết
+dựa trên kết quả
+thực nghiệm và
+các mẫu quan sát.
+
+Nhóm chưa có đủ
+bằng chứng để khẳng
+định một nguyên nhân
+duy nhất dẫn đến
+hiệu quả phân loại
+thấp.
+
+Những kết quả và
+nhận xét trong
+chương là cơ sở
+để tổng kết quá
+trình thực hiện,
+đánh giá mức độ
+đạt được mục tiêu
+và đề xuất hướng
+phát triển tiếp
+theo trong Chương 6.

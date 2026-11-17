@@ -1,0 +1,91 @@
+
+\UnnumberedChapter{KẾT LUẬN}
+
+Trong khuôn khổ học phần Nhập môn Học máy,
+nhóm đã thực hiện đề tài
+\textbf{``Phân loại cảm xúc từ phản hồi của sinh viên''}
+nhằm vận dụng các kiến thức về học máy có giám sát
+và xử lý ngôn ngữ tự nhiên vào bài toán phân loại
+văn bản.
+
+Thông qua quá trình nghiên cứu và thực nghiệm,
+nhóm đã xây dựng được một quy trình học máy
+bao gồm các bước: khám phá dữ liệu (EDA),
+tiền xử lý văn bản, biểu diễn đặc trưng,
+huấn luyện mô hình, đánh giá kết quả và
+phân tích các trường hợp dự đoán sai.
+
+Bộ dữ liệu được sử dụng gồm 1.223 phản hồi
+thuộc ba lớp cảm xúc: positive, neutral
+và negative. Nhóm thực hiện phân chia dữ liệu
+thành 978 mẫu huấn luyện và 245 mẫu kiểm thử
+theo tỷ lệ 80/20, đồng thời áp dụng các
+biện pháp hạn chế rò rỉ dữ liệu để bảo đảm
+tính nhất quán trong quá trình thực nghiệm.
+
+Về phương pháp, nhóm đã triển khai hai
+cách biểu diễn văn bản là Bag-of-Words
+và TF-IDF, kết hợp với hai thuật toán
+Multinomial Naive Bayes và K-Nearest
+Neighbors (K-NN). Các mô hình được
+thử nghiệm với nhiều cấu hình n-gram
+và siêu tham số khác nhau. Quá trình
+lựa chọn mô hình được thực hiện bằng
+Stratified 3-Fold Cross-Validation
+với Macro F1-score làm tiêu chí đánh giá.
+
+Kết quả thực nghiệm cho thấy mô hình
+TF-IDF Unigram kết hợp K-NN với $k=5$
+đạt Macro F1-score trung bình cao nhất
+trên Cross-Validation, bằng 0,3647.
+Tuy nhiên, khi đánh giá trên tập kiểm thử,
+mô hình chỉ đạt Accuracy 0,3388 và
+Macro F1-score 0,3369.
+
+Trong khi đó, mô hình baseline sử dụng
+Bag-of-Words Unigram kết hợp
+Multinomial Naive Bayes đạt Macro
+F1-score 0,3748 trên cùng tập kiểm thử.
+Kết quả này cho thấy mô hình được lựa chọn
+bằng Cross-Validation chưa đạt hiệu quả
+tốt hơn baseline trong thực nghiệm hiện tại.
+
+Bên cạnh việc so sánh các chỉ số đánh giá,
+nhóm đã sử dụng ma trận nhầm lẫn và
+phân tích các trường hợp dự đoán sai
+để nhận diện những khó khăn của mô hình.
+Qua đó, nhóm nhận thấy hiệu quả phân loại
+có thể chịu ảnh hưởng bởi chất lượng nội dung
+phản hồi, phương pháp biểu diễn đặc trưng
+và phạm vi tham số được thử nghiệm.
+
+Mặc dù kết quả dự đoán còn hạn chế và
+chưa đủ cơ sở để khẳng định khả năng
+ứng dụng trong môi trường thực tế,
+đề tài đã đạt được mục tiêu xây dựng,
+thử nghiệm và đánh giá một quy trình
+học máy cơ bản theo yêu cầu học phần.
+
+Thông qua quá trình thực hiện, nhóm có
+cơ hội củng cố kiến thức về xử lý dữ liệu,
+biểu diễn văn bản, lựa chọn thuật toán,
+thiết kế thí nghiệm và diễn giải kết quả.
+Đồng thời, việc tổ chức mã nguồn bằng
+Jupyter Notebook và quản lý dự án trên
+GitHub góp phần rèn luyện kỹ năng phối hợp
+nhóm và phát triển phần mềm có khả năng
+kiểm tra, tái tạo.
+
+Trong tương lai, nhóm có thể tiếp tục
+nghiên cứu cải thiện chất lượng dữ liệu,
+mở rộng phạm vi thử nghiệm siêu tham số,
+áp dụng các phương pháp biểu diễn văn bản
+nâng cao và đánh giá mô hình trên những
+tập dữ liệu độc lập khác.
+
+Nhìn chung, đề tài không chỉ giúp nhóm
+vận dụng kiến thức lý thuyết vào một
+bài toán cụ thể mà còn làm rõ tầm quan
+trọng của chất lượng dữ liệu, quy trình
+thực nghiệm và phương pháp đánh giá
+trong việc xây dựng các mô hình học máy.

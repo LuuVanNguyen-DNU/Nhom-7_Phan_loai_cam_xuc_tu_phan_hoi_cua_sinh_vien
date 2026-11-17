@@ -1,0 +1,7 @@
+﻿true_to_pred,count
+positive → negative,41
+neutral → negative,29
+positive → neutral,27
+negative → neutral,23
+neutral → positive,23
+negative → positive,19

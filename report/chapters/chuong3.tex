@@ -1,0 +1,686 @@
+
+\chapter{PHÂN TÍCH MÃ NGUỒN VÀ CHỨC NĂNG}
+
+
+\section{Tổng quan tổ chức mã nguồn}
+
+\subsection{Mục đích tổ chức chương trình}
+
+Để triển khai đề tài ``Phân loại cảm xúc từ phản hồi của sinh viên'', nhóm sử dụng ngôn ngữ lập trình Python và tổ chức mã nguồn dưới dạng các Jupyter Notebook kết hợp với module Python dùng chung.
+
+Cách tổ chức này cho phép nhóm phân chia công việc theo từng giai đoạn của quy trình học máy, đồng thời thuận tiện cho việc theo dõi dữ liệu, kiểm tra các bước xử lý và phân tích kết quả thực nghiệm.
+
+Chương trình được chia thành bốn notebook chính, tương ứng với bốn nhóm chức năng: khám phá dữ liệu, tiền xử lý và biểu diễn đặc trưng, huấn luyện mô hình, đánh giá và phân tích lỗi.
+
+Ngoài các notebook, nhóm sử dụng module \texttt{src.text\_utils} để quản lý hàm làm sạch văn bản và các thư mục kết quả để lưu dữ liệu trung gian, mô hình cùng những thông tin phục vụ báo cáo.
+
+Việc tách các bước xử lý thành những thành phần riêng biệt giúp chương trình có cấu trúc rõ ràng hơn. Mỗi notebook có nhiệm vụ cụ thể và sử dụng các tệp dữ liệu đầu ra của giai đoạn trước làm đầu vào cho giai đoạn tiếp theo.
+
+
+\subsection{Ngôn ngữ và thư viện sử dụng}
+
+Nhóm sử dụng Python làm ngôn ngữ lập trình chính. Quá trình phát triển và chạy chương trình được thực hiện trên Visual Studio Code kết hợp với môi trường Python được quản lý bằng Anaconda.
+
+Các thư viện chính được sử dụng trong dự án được trình bày tại Bảng~\ref{tab:thu-vien-chuong3}.
+
+\begin{table}[H]
+\centering
+\caption{Các thư viện và công cụ chính của chương trình}
+\label{tab:thu-vien-chuong3}
+\renewcommand{\arraystretch}{1.15}
+
+\begin{tabularx}{\textwidth}{|p{0.29\textwidth}|X|}
+\hline
+\textbf{Thư viện/Công cụ} &
+\textbf{Vai trò trong chương trình} \\
+\hline
+
+Python &
+Ngôn ngữ lập trình triển khai các bước xử lý dữ liệu và học máy. \\
+\hline
+
+Pandas &
+Đọc dữ liệu CSV, xử lý DataFrame, thống kê và xuất kết quả. \\
+\hline
+
+NumPy &
+Hỗ trợ các thao tác tính toán và xử lý mảng dữ liệu. \\
+\hline
+
+Matplotlib, Seaborn &
+Trực quan hóa dữ liệu, kết quả mô hình và ma trận nhầm lẫn. \\
+\hline
+
+Scikit-learn &
+Chia dữ liệu, biểu diễn đặc trưng, huấn luyện, kiểm định chéo và đánh giá mô hình. \\
+\hline
+
+SciPy &
+Lưu trữ và đọc các ma trận đặc trưng dạng thưa. \\
+\hline
+
+Joblib &
+Lưu các bộ vector hóa và mô hình đã huấn luyện. \\
+\hline
+
+Jupyter Notebook &
+Tổ chức mã nguồn thành các ô thực thi, thuận tiện cho thử nghiệm và theo dõi kết quả. \\
+\hline
+
+Visual Studio Code &
+Soạn thảo, quản lý và thực thi mã nguồn của dự án. \\
+\hline
+
+\end{tabularx}
+\end{table}
+
+Các thư viện trên được sử dụng để triển khai những thuật toán và phương pháp đã lựa chọn trong Chương 2. Chương trình không yêu cầu xây dựng giao diện người dùng để thực hiện các thí nghiệm học máy cơ bản.
+
+
+% =============================================
+% 3.2. CẤU TRÚC THƯ MỤC DỰ ÁN
+% =============================================
+
+\section{Cấu trúc thư mục dự án}
+
+\subsection{Tổ chức các thành phần chính}
+
+Mã nguồn và dữ liệu của nhóm được tổ chức theo cấu trúc thư mục, trong đó các notebook được lưu riêng với dữ liệu đầu vào, module hỗ trợ và các kết quả thực nghiệm.
+
+Các thành phần chính được trình bày tại Bảng~\ref{tab:cau-truc-du-an}.
+
+\begin{table}[H]
+\centering
+\caption{Cấu trúc các thành phần chính trong dự án}
+\label{tab:cau-truc-du-an}
+\renewcommand{\arraystretch}{1.15}
+
+\begin{tabularx}{\textwidth}{|p{0.38\textwidth}|X|}
+\hline
+\textbf{Thư mục/Tệp} &
+\textbf{Chức năng} \\
+\hline
+
+\texttt{data/} &
+Chứa bộ dữ liệu phản hồi sinh viên ở định dạng CSV. \\
+\hline
+
+\texttt{notebook/} &
+Chứa bốn Jupyter Notebook thực hiện các giai đoạn học máy. \\
+\hline
+
+\texttt{src/text\_utils.py} &
+Chứa hàm tiền xử lý văn bản dùng chung. \\
+\hline
+
+\texttt{results/eda/} &
+Lưu thống kê và thông tin tổng hợp từ EDA. \\
+\hline
+
+\texttt{results/figures/} &
+Lưu hình ảnh và biểu đồ được xuất từ bước khám phá dữ liệu. \\
+\hline
+
+\texttt{results/member2\_outputs/} &
+Lưu dữ liệu sau làm sạch, tập Train/Test, ma trận đặc trưng và bộ vector hóa. \\
+\hline
+
+\texttt{results/training/} &
+Lưu kết quả kiểm định chéo, thông tin mô hình và dự đoán trên tập kiểm thử. \\
+\hline
+
+\texttt{results/evaluation/} &
+Lưu bảng đánh giá, ma trận nhầm lẫn, biểu đồ và các trường hợp dự đoán sai. \\
+\hline
+
+\texttt{requirements.txt} &
+Khai báo các thư viện Python cần sử dụng trong dự án. \\
+\hline
+
+\end{tabularx}
+\end{table}
+
+Cách tổ chức này giúp tách biệt dữ liệu đầu vào, mã nguồn xử lý và kết quả đầu ra. Đồng thời, các thành viên có thể sử dụng chung cấu trúc thư mục để hạn chế sai lệch đường dẫn khi thực hiện công việc.
+
+
+\subsection{Các notebook chính}
+
+Bốn notebook được đặt tên theo thứ tự thực hiện và chức năng tương ứng.
+
+\begin{table}[H]
+\centering
+\caption{Vai trò của các notebook trong dự án}
+\label{tab:chuc-nang-notebook}
+\renewcommand{\arraystretch}{1.15}
+
+\begin{tabularx}{\textwidth}{|p{0.38\textwidth}|X|}
+\hline
+\textbf{Notebook} &
+\textbf{Chức năng chính} \\
+\hline
+
+\texttt{01\_EDA.ipynb} &
+Khám phá cấu trúc dữ liệu, kiểm tra chất lượng, phân phối nhãn, độ dài văn bản và trực quan hóa. \\
+\hline
+
+\texttt{02\_Preprocessing.ipynb} &
+Làm sạch văn bản, kiểm tra dữ liệu, chia Train/Test, xây dựng BoW và TF-IDF. \\
+\hline
+
+\texttt{03\_Training.ipynb} &
+Huấn luyện baseline, Naive Bayes, K-NN, thử nghiệm siêu tham số và lựa chọn mô hình bằng Cross-Validation. \\
+\hline
+
+\texttt{04\_Evaluation.ipynb} &
+Tổng hợp chỉ số đánh giá, xây dựng ma trận nhầm lẫn và phân tích các trường hợp dự đoán sai. \\
+\hline
+
+\end{tabularx}
+\end{table}
+
+Các notebook được thiết kế để chạy theo thứ tự. Trong đó, notebook 02 tạo dữ liệu đầu vào cho notebook 03; notebook 03 tiếp tục cung cấp kết quả dự đoán cho notebook 04.
+
+
+% =============================================
+% 3.3. PHÂN TÍCH CHỨC NĂNG NOTEBOOK
+% =============================================
+
+\section{Phân tích chức năng của các notebook}
+
+\subsection{Notebook 01: Khám phá và phân tích dữ liệu}
+
+Notebook \texttt{01\_EDA.ipynb} đảm nhiệm giai đoạn khám phá dữ liệu ban đầu.
+
+Chương trình sử dụng Pandas để đọc tệp \texttt{student\_feedback\_dataset.csv}, sau đó kiểm tra kích thước, danh sách thuộc tính, kiểu dữ liệu và các thông tin thống kê cơ bản.
+
+Các chức năng chính bao gồm:
+
+\begin{itemize}
+    \item Đọc và hiển thị các bản ghi đầu tiên của bộ dữ liệu.
+
+    \item Kiểm tra số lượng dòng, số lượng cột và kiểu dữ liệu.
+
+    \item Thống kê giá trị thiếu và bản ghi trùng lặp hoàn toàn.
+
+    \item Xác định các nhãn xuất hiện trong cột \texttt{sentiment\_label}.
+
+    \item Phân tích số lượng và tỷ lệ phản hồi theo từng nhãn cảm xúc.
+
+    \item Trực quan hóa phân phối nhãn, khoa và loại phản hồi.
+
+    \item Thống kê độ dài văn bản theo số từ và số ký tự.
+
+    \item Kiểm tra nội dung trùng lặp và các trường hợp cùng văn bản nhưng có nhiều nhãn.
+
+    \item Xuất thống kê để phục vụ quá trình lập báo cáo.
+\end{itemize}
+
+Trong quá trình phân tích độ dài, chương trình sử dụng thao tác tách văn bản theo khoảng trắng và đếm số phần tử thu được.
+
+Đoạn mã chính được thể hiện như sau:
+
+\begin{verbatim}
+word_count = (
+    df[TEXT_COL]
+    .fillna("")
+    .astype(str)
+    .str.split()
+    .str.len()
+)
+\end{verbatim}
+
+Trong đó, \texttt{TEXT\_COL} được thiết lập là \texttt{feedback\_text}. Kết quả \texttt{word\_count} cho biết số từ của từng phản hồi.
+
+Những thông tin này được sử dụng để xây dựng bảng thống kê và biểu đồ phân phối độ dài văn bản.
+
+Notebook cũng lưu tệp \texttt{eda\_summary.json} chứa số lượng bản ghi, số cột, số bản ghi trùng, giá trị thiếu, phân phối nhãn và độ dài trung bình.
+
+Ngoài ra, tệp \texttt{sentiment\_summary.csv} lưu số lượng và tỷ lệ các lớp cảm xúc.
+
+Các kết quả này là cơ sở cho phần phân tích dữ liệu trong Chương 1 và giúp nhóm xác định những vấn đề cần lưu ý trước khi tiền xử lý.
+
+
+\subsection{Notebook 02: Tiền xử lý và biểu diễn đặc trưng}
+
+Notebook \texttt{02\_Preprocessing.ipynb} thực hiện việc chuẩn bị dữ liệu để đưa vào các thuật toán học máy.
+
+Đầu tiên, chương trình đọc dữ liệu gốc và kiểm tra sự tồn tại của hai thuộc tính bắt buộc là \texttt{feedback\_text} và \texttt{sentiment\_label}.
+
+Sau đó, hàm \texttt{clean\_text()} được áp dụng lên từng phản hồi để tạo cột \texttt{clean\_text}.
+
+Tiếp theo, chương trình loại bỏ các bản ghi không hợp lệ hoặc trùng nội dung theo quy tắc đã xác định. Những trường hợp cùng nội dung nhưng có nhãn mâu thuẫn được kiểm tra riêng trước khi chia dữ liệu.
+
+Một chức năng quan trọng của notebook là phân chia dữ liệu bằng \texttt{train\_test\_split()} với tỷ lệ 80/20, \texttt{random\_state=42} và phân tầng theo nhãn mục tiêu.
+
+Sau khi chia dữ liệu, chương trình tạo bốn cấu hình biểu diễn đặc trưng:
+
+\begin{itemize}
+    \item Bag-of-Words Unigram.
+
+    \item Bag-of-Words Unigram kết hợp Bigram.
+
+    \item TF-IDF Unigram.
+
+    \item TF-IDF Unigram kết hợp Bigram.
+\end{itemize}
+
+Đối với mỗi cấu hình, bộ vector hóa chỉ được huấn luyện trên tập train. Tập test được chuyển đổi bằng bộ vector hóa đã học.
+
+Đoạn mã thể hiện nguyên tắc này như sau:
+
+\begin{verbatim}
+Xtr = vectorizer.fit_transform(X_train)
+Xte = vectorizer.transform(X_test)
+\end{verbatim}
+
+Trong đó, \texttt{fit\_transform()} vừa học bộ từ vựng vừa chuyển đổi dữ liệu huấn luyện, còn \texttt{transform()} chỉ chuyển đổi dữ liệu dựa trên bộ từ vựng đã học.
+
+Việc tách biệt hai thao tác giúp tránh sử dụng thông tin của tập kiểm thử trong quá trình xây dựng bộ đặc trưng.
+
+Bên cạnh đó, chương trình thống kê kích thước và độ thưa của các ma trận đặc trưng nhằm cung cấp cơ sở phân tích ảnh hưởng của phương pháp biểu diễn văn bản.
+
+Sau khi xử lý, notebook lưu các tệp \texttt{train.csv}, \texttt{test.csv}, các ma trận \texttt{.npz}, bộ vector hóa \texttt{.joblib} và tệp \texttt{experiment\_config.json}.
+
+Những tệp trên được sử dụng làm đầu vào cho notebook huấn luyện mô hình.
+
+
+\subsection{Notebook 03: Huấn luyện mô hình và thử nghiệm tham số}
+
+Notebook \texttt{03\_Training.ipynb} chịu trách nhiệm huấn luyện, thử nghiệm và lựa chọn các cấu hình mô hình phân loại.
+
+Chương trình đọc tập train, tập test và thông tin cấu hình đã được notebook 02 lưu lại, thay vì tự đọc và chia lại bộ dữ liệu ban đầu.
+
+Trước khi huấn luyện, chương trình kiểm tra các thuộc tính cần thiết, số lượng mẫu và tính độc lập giữa hai tập dữ liệu.
+
+Quá trình huấn luyện được chia thành các nhiệm vụ chính.
+
+\textbf{Thứ nhất, xây dựng các mốc so sánh.}
+
+Nhóm sử dụng \texttt{DummyClassifier} với chiến lược dự đoán lớp phổ biến nhất làm mốc tham khảo đơn giản.
+
+Bên cạnh đó, cấu hình Bag-of-Words Unigram kết hợp \texttt{MultinomialNB(alpha=1.0)} được sử dụng làm baseline chính.
+
+\textbf{Thứ hai, thử nghiệm các thuật toán phân loại.}
+
+Nhóm kết hợp bốn phương án biểu diễn văn bản với hai thuật toán Multinomial Naive Bayes và K-NN, tạo thành tám tổ hợp biểu diễn--thuật toán.
+
+Đối với Naive Bayes, chương trình thử các giá trị $\alpha$ gồm 0.5, 1.0 và 2.0.
+
+Đối với K-NN, chương trình thử các giá trị số láng giềng $k$ gồm 3, 5 và 7, sử dụng khoảng cách Cosine.
+
+\textbf{Thứ ba, lựa chọn tham số bằng Cross-Validation.}
+
+Chương trình sử dụng \texttt{StratifiedKFold} với ba fold kết hợp \texttt{GridSearchCV} để thử nghiệm tham số trên tập huấn luyện.
+
+Bộ vector hóa và thuật toán được đặt chung trong \texttt{Pipeline}.
+
+Đoạn mã cốt lõi được thể hiện như sau:
+
+\begin{verbatim}
+pipe = Pipeline([
+    ("vectorizer", vec),
+    ("model", est)
+])
+
+grid = GridSearchCV(
+    pipe,
+    param_grid=param_grid,
+    cv=cv,
+    scoring="f1_macro",
+    n_jobs=1,
+    refit=True
+)
+
+grid.fit(X_train_text, y_train)
+\end{verbatim}
+
+Trong đó, \texttt{param\_grid} xác định các siêu tham số cần thử nghiệm, còn \texttt{cv} là đối tượng kiểm định chéo được thiết lập từ tập huấn luyện.
+
+Tham số \texttt{scoring="f1\_macro"} xác định Macro F1-score là tiêu chí lựa chọn cấu hình.
+
+Nhờ đưa bộ vector hóa vào \texttt{Pipeline}, mỗi lần kiểm định chéo đều xây dựng bộ đặc trưng dựa trên phần dữ liệu huấn luyện tương ứng.
+
+\textbf{Thứ tư, lưu kết quả thực nghiệm.}
+
+Notebook lưu điểm CV của từng tổ hợp, toàn bộ 24 lượt thử siêu tham số và bảng thể hiện ảnh hưởng của $\alpha$ hoặc $k$ đến kết quả kiểm định chéo.
+
+Sau khi lựa chọn cấu hình bằng CV, chương trình thực hiện dự đoán trên tập test cố định, tính các chỉ số đánh giá và lưu kết quả.
+
+Các tệp quan trọng gồm:
+
+\begin{itemize}
+    \item \texttt{model\_cv\_results.csv}: kết quả CV của các tổ hợp biểu diễn--thuật toán.
+
+    \item \texttt{cv\_hyperparameter\_details.csv}: kết quả chi tiết của các lượt thử tham số.
+
+    \item \texttt{test\_metrics.csv}: các chỉ số đánh giá trên tập test.
+
+    \item \texttt{test\_predictions.csv}: nhãn thực tế và nhãn dự đoán của từng mẫu.
+
+    \item \texttt{best\_model.json}: thông tin mô hình được lựa chọn theo CV.
+
+    \item \texttt{best\_model.joblib}: mô hình đã được huấn luyện và lưu lại.
+\end{itemize}
+
+Những kết quả này được chuyển sang notebook 04 để thực hiện đánh giá và phân tích lỗi.
+
+
+\subsection{Notebook 04: Đánh giá và phân tích lỗi}
+
+Notebook \texttt{04\_Evaluation.ipynb} đảm nhiệm giai đoạn đánh giá và tổng hợp kết quả thực nghiệm.
+
+Chương trình đọc các tệp \texttt{test\_metrics.csv}, \texttt{test\_predictions.csv} và \texttt{best\_model.json} do notebook 03 tạo ra.
+
+Trước khi phân tích, chương trình kiểm tra sự thống nhất giữa danh sách mô hình trong bảng chỉ số và danh sách mô hình trong tệp dự đoán.
+
+Các chức năng chính bao gồm:
+
+\begin{itemize}
+    \item Xây dựng bảng so sánh các mô hình với baseline.
+
+    \item So sánh Accuracy, Precision, Recall và F1-score.
+
+    \item Trực quan hóa Accuracy và Macro F1-score của các phương án.
+
+    \item Tạo Classification Report cho các mô hình được lựa chọn để phân tích.
+
+    \item Xây dựng Confusion Matrix và thống kê số lượng dự đoán giữa các cặp nhãn.
+
+    \item Lọc những phản hồi được mô hình dự đoán sai.
+
+    \item Thống kê các cặp nhãn thường bị nhầm lẫn.
+
+    \item Xuất các trường hợp dự đoán sai để phục vụ phân tích thủ công.
+
+    \item Tổng hợp thông tin đánh giá cho báo cáo khoa học.
+\end{itemize}
+
+Để xác định những trường hợp dự đoán sai, chương trình so sánh nhãn thực tế với nhãn được dự đoán:
+
+\begin{verbatim}
+wrong = best_pred.loc[
+    best_pred[LABEL_COL].astype(str)
+    != best_pred["predicted_label"].astype(str)
+].copy()
+\end{verbatim}
+
+Trong đó, \texttt{best\_pred} chứa kết quả dự đoán của mô hình đã được lựa chọn bằng Cross-Validation.
+
+Biến \texttt{wrong} lưu những bản ghi có nhãn dự đoán khác với nhãn thực tế.
+
+Sau đó, chương trình thống kê các cặp nhãn nhầm lẫn và xuất các phản hồi tương ứng để nhóm xem xét.
+
+Kết quả phân tích được lưu trong thư mục \texttt{results/evaluation/}, bao gồm bảng so sánh mô hình, các chỉ số theo lớp, ma trận nhầm lẫn và danh sách phản hồi dự đoán sai.
+
+Notebook cũng sử dụng biểu đồ để hỗ trợ quan sát và so sánh kết quả.
+
+Những số liệu và hình ảnh này sẽ được lựa chọn đưa vào Chương 4 và Chương 5 của báo cáo LaTeX.
+
+
+% =============================================
+% 3.4. PHÂN TÍCH MODULE VÀ HÀM QUAN TRỌNG
+% =============================================
+
+\section{Phân tích các module và hàm quan trọng}
+
+\subsection{Hàm làm sạch văn bản}
+
+Module \texttt{src/text\_utils.py} chứa hàm \texttt{clean\_text()}, được sử dụng trong bước chuẩn bị dữ liệu.
+
+Hàm này tiếp nhận một giá trị đầu vào, kiểm tra trường hợp rỗng, sau đó thực hiện chuẩn hóa chữ thường, xử lý URL, dấu câu và khoảng trắng.
+
+Các thao tác chính được trình bày như sau:
+
+\begin{verbatim}
+text = str(value).lower()
+
+text = re.sub(
+    r"https?://\S+|www\.\S+",
+    " ",
+    text
+)
+
+text = re.sub(
+    r"[^\w\s']",
+    " ",
+    text,
+    flags=re.UNICODE
+)
+
+return re.sub(r"\s+", " ", text).strip()
+\end{verbatim}
+
+Trước khi thực hiện các thao tác trên, hàm kiểm tra giá trị đầu vào để xử lý trường hợp \texttt{None} hoặc giá trị thiếu phù hợp.
+
+Trong đó, thư viện \texttt{re} hỗ trợ xử lý văn bản bằng biểu thức chính quy.
+
+Việc xây dựng hàm riêng giúp nhóm sử dụng thống nhất quy tắc làm sạch và tránh định nghĩa nhiều phiên bản xử lý khác nhau trong các notebook.
+
+
+\subsection{Hàm đánh giá mô hình}
+
+Notebook 03 xây dựng hàm \texttt{evaluate()} để tính toán các chỉ số đánh giá từ nhãn thực tế và nhãn dự đoán.
+
+Hàm tiếp nhận hai tham số là \texttt{y\_true} và \texttt{y\_pred}, sau đó trả về một cấu trúc dữ liệu chứa các chỉ số:
+
+\begin{itemize}
+    \item Accuracy.
+
+    \item Precision theo Macro-average.
+
+    \item Recall theo Macro-average.
+
+    \item F1-score theo Macro-average.
+
+    \item F1-score theo Weighted-average.
+\end{itemize}
+
+Việc sử dụng chung một hàm đánh giá giúp bảo đảm các mô hình được tính toán chỉ số theo cùng phương pháp.
+
+Bên cạnh đó, chương trình sử dụng \texttt{zero\_division=0} trong các hàm Precision, Recall và F1-score để xử lý những trường hợp phép tính không xác định do không có mẫu dự đoán thuộc một lớp.
+
+
+\subsection{Hàm lưu kết quả dự đoán}
+
+Notebook 03 sử dụng hàm \texttt{save\_predictions()} để lưu nhãn dự đoán của từng mô hình.
+
+Hàm tạo một bảng dữ liệu gồm các trường quan trọng:
+
+\begin{itemize}
+    \item \texttt{source\_index}: chỉ số bản ghi trong dữ liệu ban đầu.
+
+    \item \texttt{feedback\_text}: nội dung phản hồi gốc.
+
+    \item \texttt{clean\_text}: nội dung sau làm sạch.
+
+    \item \texttt{sentiment\_label}: nhãn cảm xúc thực tế.
+
+    \item \texttt{model\_id}: mã nhận diện mô hình.
+
+    \item \texttt{predicted\_label}: nhãn mô hình dự đoán.
+
+    \item \texttt{is\_correct}: kết quả kiểm tra dự đoán đúng hoặc sai.
+\end{itemize}
+
+Nhờ lưu lại thông tin của từng mẫu, notebook 04 có thể phân tích lỗi mà không cần huấn luyện lại mô hình.
+
+Đặc biệt, trường \texttt{source\_index} giúp đối chiếu kết quả dự đoán với vị trí bản ghi trong bộ dữ liệu ban đầu.
+
+
+% =============================================
+% 3.5. LIÊN KẾT VÀ BÀN GIAO DỮ LIỆU
+% =============================================
+
+\section{Cơ chế liên kết và bàn giao dữ liệu}
+
+\subsection{Nguyên tắc bàn giao giữa các notebook}
+
+Trong chương trình, các notebook không truyền trực tiếp biến Python qua cùng một phiên chạy.
+
+Thay vào đó, nhóm lưu dữ liệu và kết quả ra các tệp trung gian trên ổ đĩa.
+
+Cách tổ chức này cho phép các notebook được chạy trong những phiên Python độc lập mà vẫn sử dụng được kết quả của giai đoạn trước.
+
+Các tệp bàn giao chính được trình bày trong Bảng~\ref{tab:ban-giao-notebook}.
+
+\begin{table}[H]
+\centering
+\caption{Các dữ liệu bàn giao giữa các notebook}
+\label{tab:ban-giao-notebook}
+\renewcommand{\arraystretch}{1.15}
+
+\begin{tabularx}{\textwidth}{|p{0.28\textwidth}|X|}
+\hline
+\textbf{Giai đoạn} &
+\textbf{Dữ liệu bàn giao} \\
+\hline
+
+Notebook 01 &
+Thống kê dữ liệu, phân phối nhãn và biểu đồ EDA; dùng làm căn cứ phân tích ban đầu. \\
+\hline
+
+Notebook 02 sang 03 &
+Tệp Train/Test, ma trận đặc trưng, bộ vector hóa và cấu hình thực nghiệm. \\
+\hline
+
+Notebook 03 sang 04 &
+Bảng chỉ số đánh giá, kết quả dự đoán từng mẫu và thông tin mô hình được chọn bằng CV. \\
+\hline
+
+Notebook 04 sang báo cáo &
+Bảng so sánh, biểu đồ, Confusion Matrix và danh sách các trường hợp dự đoán sai. \\
+\hline
+
+\end{tabularx}
+\end{table}
+
+Notebook 01 thực hiện chức năng phân tích độc lập trên dữ liệu gốc, không trực tiếp tạo tập Train/Test cho notebook 02.
+
+Notebook 02 là giai đoạn chuẩn bị dữ liệu dùng chung cho huấn luyện. Notebook 03 sử dụng kết quả từ notebook 02 mà không chia lại dữ liệu gốc.
+
+Cuối cùng, notebook 04 sử dụng kết quả do notebook 03 tạo ra để thực hiện đánh giá và phân tích lỗi, không cần huấn luyện lại các mô hình.
+
+
+\subsection{Lưu cấu hình và bảo đảm tính nhất quán}
+
+Bên cạnh dữ liệu đã xử lý, notebook 02 lưu tệp \texttt{experiment\_config.json} chứa các thông tin quan trọng như:
+
+\begin{itemize}
+    \item Tên cột văn bản và cột nhãn.
+
+    \item Tỷ lệ chia Train/Test.
+
+    \item Giá trị \texttt{random\_state}.
+
+    \item Các cấu hình biểu diễn BoW và TF-IDF.
+
+    \item Quy tắc xử lý dữ liệu và số lượng mẫu bị loại bỏ.
+
+    \item Giá trị băm SHA-256 của tệp dữ liệu nguồn.
+\end{itemize}
+
+Notebook 03 đọc cấu hình này để sử dụng thống nhất các thiết lập thí nghiệm.
+
+Việc lưu giá trị băm SHA-256 giúp nhận diện phiên bản tệp dữ liệu nguồn được sử dụng khi thực hiện thí nghiệm.
+
+Tuy nhiên, giá trị băm chỉ hỗ trợ kiểm tra tính nhất quán của tệp dữ liệu, không tự chứng minh dữ liệu có chất lượng tốt hoặc nhãn đã chính xác.
+
+
+% =============================================
+% 3.6. KIỂM TRA TÍNH ĐÚNG ĐẮN VÀ XỬ LÝ LỖI
+% =============================================
+
+\section{Kiểm tra tính đúng đắn và xử lý lỗi}
+
+Để hạn chế sai sót trong quá trình chạy chương trình, nhóm bổ sung các bước kiểm tra tại những giai đoạn quan trọng.
+
+\subsection{Kiểm tra dữ liệu đầu vào}
+
+Khi đọc dữ liệu, chương trình kiểm tra sự tồn tại của tệp CSV và các cột bắt buộc.
+
+Nếu không tìm thấy bộ dữ liệu hoặc các trường đầu vào cần thiết, chương trình thông báo lỗi để người thực hiện kiểm tra lại cấu trúc thư mục.
+
+Notebook 02 cũng kiểm tra số lượng nhãn và điều kiện chia dữ liệu có phân tầng.
+
+Điều này giúp hạn chế các trường hợp chương trình tiếp tục chạy với dữ liệu không phù hợp cho bài toán phân loại.
+
+
+\subsection{Kiểm tra tính độc lập của Train/Test}
+
+Notebook 03 kiểm tra để bảo đảm không có chỉ số bản ghi hoặc nội dung văn bản đã làm sạch xuất hiện đồng thời trong tập huấn luyện và tập kiểm thử.
+
+Ví dụ, chương trình sử dụng phép kiểm tra sau:
+
+\begin{verbatim}
+assert not (
+    set(train_df["clean_text"])
+    & set(test_df["clean_text"])
+)
+\end{verbatim}
+
+Nếu có nội dung xuất hiện trong cả hai tập, chương trình sẽ dừng tại bước kiểm tra.
+
+Ngoài ra, các ma trận đặc trưng cũng được đối chiếu số lượng dòng với số mẫu tương ứng nhằm hạn chế sai lệch giữa dữ liệu và nhãn mục tiêu.
+
+
+\subsection{Kiểm tra kết quả bàn giao}
+
+Ở cuối notebook 03, chương trình kiểm tra mã mô hình trong bảng kết quả có bị trùng lặp hay không, số lượng bản ghi dự đoán của mỗi mô hình và tính duy nhất của cặp chỉ số mẫu--mô hình.
+
+Notebook 04 tiếp tục kiểm tra sự thống nhất giữa các mô hình có trong bảng chỉ số và tệp kết quả dự đoán.
+
+Những bước kiểm tra này giúp phát hiện sớm một số lỗi về dữ liệu đầu vào, số lượng mẫu hoặc quá trình bàn giao.
+
+Tuy nhiên, các phép kiểm tra kỹ thuật không bảo đảm mô hình sẽ đạt độ chính xác cao. Hiệu quả dự đoán vẫn cần được xác định bằng kết quả đánh giá thực nghiệm.
+
+
+% =============================================
+% 3.7. QUY TRÌNH CHẠY CHƯƠNG TRÌNH
+% =============================================
+
+\section{Quy trình thực thi chương trình}
+
+Sau khi chuẩn bị môi trường Python và các thư viện cần thiết, nhóm thực hiện chương trình trong Visual Studio Code.
+
+Để bảo đảm các đầu ra trung gian được tạo đúng thứ tự, các notebook được chạy theo trình tự:
+
+\begin{enumerate}
+    \item \textbf{Chạy \texttt{01\_EDA.ipynb}:}
+
+    Đọc bộ dữ liệu ban đầu, thực hiện thống kê, kiểm tra chất lượng và trực quan hóa dữ liệu.
+
+    \item \textbf{Chạy \texttt{02\_Preprocessing.ipynb}:}
+
+    Làm sạch văn bản, chia Train/Test, tạo bốn cấu hình BoW/TF-IDF và lưu kết quả vào thư mục \texttt{results/member2\_outputs/}.
+
+    \item \textbf{Chạy \texttt{03\_Training.ipynb}:}
+
+    Đọc dữ liệu được bàn giao, huấn luyện baseline và các mô hình thử nghiệm, lựa chọn siêu tham số bằng Cross-Validation, sau đó lưu kết quả huấn luyện và dự đoán.
+
+    \item \textbf{Chạy \texttt{04\_Evaluation.ipynb}:}
+
+    Đọc các kết quả đã lưu, tính toán và trực quan hóa chỉ số đánh giá, tạo ma trận nhầm lẫn và thống kê các phản hồi dự đoán sai.
+\end{enumerate}
+
+Trong mỗi notebook, các ô code cần được thực thi theo thứ tự từ đầu đến cuối để bảo đảm những biến và kết quả trung gian được khởi tạo đầy đủ.
+
+Khi thực hiện lại toàn bộ quy trình, nhóm sử dụng cùng bộ dữ liệu, tỷ lệ chia Train/Test và các thiết lập ngẫu nhiên đã được ghi trong cấu hình thí nghiệm.
+
+Việc lưu dữ liệu trung gian và kết quả theo từng giai đoạn giúp các thành viên dễ dàng kiểm tra lại quá trình xử lý khi phát sinh lỗi.
+
+
+% =============================================
+% 3.8. TỔNG KẾT CHƯƠNG
+% =============================================
+
+\section{Tổng kết chương}
+
+Trong chương này, nhóm đã trình bày cấu trúc mã nguồn và các chức năng chính của chương trình phân loại cảm xúc từ phản hồi sinh viên.
+
+Hệ thống được tổ chức thành bốn Jupyter Notebook tương ứng với các giai đoạn khám phá dữ liệu, tiền xử lý và biểu diễn đặc trưng, huấn luyện mô hình, đánh giá và phân tích lỗi.
+
+Các thành phần được liên kết thông qua tệp dữ liệu trung gian, cấu hình thực nghiệm và kết quả dự đoán đã lưu. Cách tổ chức này giúp tách biệt các nhiệm vụ, hỗ trợ phối hợp làm việc nhóm và tạo điều kiện kiểm tra lại quy trình.
+
+Các đoạn mã quan trọng được lựa chọn để giải thích cơ chế xử lý dữ liệu, biểu diễn đặc trưng, huấn luyện và đánh giá mô hình, thay vì trình bày toàn bộ mã nguồn.
+
+Trên cơ sở chương trình đã xây dựng, Chương 4 sẽ trình bày các thiết lập thử nghiệm, bảng kết quả đánh giá và những biểu đồ so sánh thu được từ quá trình chạy mô hình.
